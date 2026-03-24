@@ -72,6 +72,9 @@ body {
 .forge-admin input[type="email"],
 .forge-admin input[type="password"],
 .forge-admin input[type="number"],
+.forge-admin input[type="url"],
+.forge-admin input[type="date"],
+.forge-admin input[type="datetime-local"],
 .forge-admin textarea,
 .forge-admin select {
   width: 100%;
@@ -85,11 +88,104 @@ body {
 .dark .forge-admin input[type="email"],
 .dark .forge-admin input[type="password"],
 .dark .forge-admin input[type="number"],
+.dark .forge-admin input[type="url"],
+.dark .forge-admin input[type="date"],
+.dark .forge-admin input[type="datetime-local"],
 .dark .forge-admin textarea,
 .dark .forge-admin select {
   background: #1e293b;
   border-color: #475569;
   color: #f8fafc;
+}
+
+.forge-admin input[type="checkbox"] {
+  accent-color: var(--forge-accent);
+}
+
+.forge-admin .help {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.forge-admin ul.errorlist {
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.forge-form-shell fieldset + fieldset {
+  border-top: 1px solid #e2e8f0;
+}
+
+.dark .forge-form-shell fieldset + fieldset {
+  border-top-color: #1e293b;
+}
+
+.forge-form-row {
+  display: grid;
+  grid-template-columns: minmax(140px, 180px) 1fr;
+  gap: 1rem;
+  align-items: start;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.dark .forge-form-row {
+  border-bottom-color: #1e293b;
+}
+
+.forge-form-row:last-child {
+  border-bottom: 0;
+}
+
+.forge-form-label {
+  padding-top: 0.45rem;
+}
+
+.forge-form-control {
+  min-width: 0;
+}
+
+/* Toggle switches for boolean fields in add/edit forms */
+.forge-form-control input[type="checkbox"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 2.4rem;
+  height: 1.35rem;
+  border-radius: 999px;
+  background: #cbd5e1;
+  border: 1px solid #94a3b8;
+  position: relative;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.forge-form-control input[type="checkbox"]::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 1.05rem;
+  height: 1.05rem;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(2, 6, 23, 0.35);
+  transition: transform 180ms ease;
+}
+
+.forge-form-control input[type="checkbox"]:checked {
+  background: var(--forge-accent);
+  border-color: var(--forge-accent);
+}
+
+.forge-form-control input[type="checkbox"]:checked::after {
+  transform: translateX(1.02rem);
+}
+
+.dark .forge-form-control input[type="checkbox"] {
+  background: #334155;
+  border-color: #475569;
 }
 
 .forge-accent-bg {
@@ -129,6 +225,7 @@ body {
   flex-wrap: wrap;
   gap: 0.5rem;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .forge-btn {

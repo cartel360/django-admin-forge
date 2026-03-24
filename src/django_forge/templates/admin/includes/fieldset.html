@@ -1,25 +1,50 @@
 {% load i18n admin_urls %}
-<fieldset id="fieldset-{{ forloop.counter }}" class="space-y-4 scroll-mt-24">
+<fieldset id="fieldset-{{ forloop.counter }}" class="scroll-mt-24">
   {% if fieldset.name %}
-    <h3 class="text-sm font-semibold uppercase tracking-wide text-slate-500">{{ fieldset.name }}</h3>
+    <div class="px-4 py-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/40">
+      <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ fieldset.name }}</h3>
+    </div>
   {% endif %}
   {% if fieldset.description %}
-    <p class="text-sm text-slate-500">{{ fieldset.description|safe }}</p>
+    <p class="px-4 py-2 text-sm text-slate-500 border-b border-slate-200 dark:border-slate-800">{{ fieldset.description|safe }}</p>
   {% endif %}
   {% for line in fieldset %}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {% for field in line %}
-        <div class="space-y-1">
-          {% if field.field.name %}
-            <label class="block text-sm font-medium text-slate-700 dark:text-slate-200">{{ field.field.label }}</label>
+    {% for field in line %}
+      <div class="forge-form-row {% if field.is_readonly %}opacity-80{% endif %}">
+        <div class="forge-form-label">
+          {% if field.is_checkbox %}
+            <span class="block text-sm font-medium text-slate-700 dark:text-slate-200">{{ field.field.label }}</span>
+          {% else %}
+            {% if field.field.name %}
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-200">
+                {{ field.field.label }}
+                {% if not field.is_readonly and field.field.field.required %}
+                  <span class="text-rose-500">*</span>
+                {% endif %}
+              </label>
+            {% endif %}
           {% endif %}
-          {{ field.field }}
+        </div>
+        <div class="forge-form-control">
+          {% if field.is_readonly %}
+            <div class="rounded-md border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 px-3 py-2 text-sm text-slate-700 dark:text-slate-200">
+              {{ field.contents }}
+            </div>
+          {% else %}
+            {{ field.field }}
+            {% if field.field.errors %}
+              <ul class="space-y-1">
+                {% for error in field.field.errors %}
+                  <li class="text-xs text-rose-600 dark:text-rose-300">{{ error }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          {% endif %}
           {% if field.field.help_text %}
             <p class="text-xs text-slate-500">{{ field.field.help_text|safe }}</p>
           {% endif %}
-          {{ field.field.errors }}
         </div>
-      {% endfor %}
-    </div>
+      </div>
+    {% endfor %}
   {% endfor %}
 </fieldset>

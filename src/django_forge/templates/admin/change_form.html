@@ -1,36 +1,49 @@
 {% extends "admin/base_site.html" %}
-{% load i18n admin_urls static admin_modify %}
+{% load i18n admin_urls static admin_modify forge_icons %}
 
 {% block content %}
 <div class="flex bg-slate-50 dark:bg-slate-950">
   {% include "admin/includes/forge_sidebar.html" %}
   <main class="flex-1 min-h-screen">
-    {% include "admin/includes/forge_topbar.html" with subtitle="Edit and validate model data" %}
+    {% include "admin/includes/forge_topbar.html" %}
     <section class="p-6">
-      <nav class="mb-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3">
-        <ul class="flex flex-wrap gap-2">
-          {% for fieldset in adminform %}
-            <li>
-              <a href="#fieldset-{{ forloop.counter }}" class="inline-flex rounded-md border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
-                {{ fieldset.name|default:"Section"|capfirst }}
-              </a>
-            </li>
-          {% endfor %}
-        </ul>
-      </nav>
+      <div class="mb-4 flex items-center justify-between gap-3">
+        <div class="text-sm text-slate-500 flex items-center gap-2">
+          {% forge_icon "arrow-left" "h-4 w-4" %}
+          <a href="{% url opts|admin_urlname:'changelist' %}" class="hover:text-slate-700 dark:hover:text-slate-200">{{ opts.app_label|forge_labelize }}</a>
+          <span>&rsaquo;</span>
+          <span class="text-slate-700 dark:text-slate-200 font-medium">{{ opts.verbose_name_plural|capfirst }}</span>
+        </div>
+      </div>
+
+      {% if adminform|length > 3 %}
+        <nav class="mb-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3">
+          <ul class="flex flex-wrap gap-2">
+            {% for fieldset in adminform %}
+              <li>
+                <a href="#fieldset-{{ forloop.counter }}" class="inline-flex rounded-md border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                  {{ fieldset.name|default:"Section"|capfirst }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </nav>
+      {% endif %}
       <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>
         {% csrf_token %}
-        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 space-y-6">
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-0 overflow-hidden forge-form-shell">
           {% if errors %}
-            <p class="text-sm text-red-600">{% blocktranslate count counter=errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}</p>
-            {{ adminform.form.non_field_errors }}
+            <div class="border-b border-rose-200 bg-rose-50 dark:border-rose-900 dark:bg-rose-950/30 px-4 py-3">
+              <p class="text-sm text-rose-700 dark:text-rose-300">{% blocktranslate count counter=errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}</p>
+              {{ adminform.form.non_field_errors }}
+            </div>
           {% endif %}
 
           {% for fieldset in adminform %}
             {% include "admin/includes/fieldset.html" %}
           {% endfor %}
 
-          <div class="sticky bottom-0 z-10 -mx-4 -mb-4 mt-6 border-t border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 px-4 py-3 backdrop-blur">
+          <div class="sticky bottom-0 z-10 border-t border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 px-4 py-3 backdrop-blur">
             {% block submit_buttons_bottom %}
               {% submit_row %}
             {% endblock %}

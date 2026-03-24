@@ -31,6 +31,9 @@ ICON_PATHS = {
     "plus": "M12 5v14M5 12h14",
     "filter": "M3 5h18M7 12h10M10 19h4",
     "inbox": "M3 4h18v12H3V4zm0 12 4-4h10l4 4M8 9h8",
+    "arrow-left": "M19 12H5M12 19l-7-7 7-7",
+    "edit-3": "M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z",
+    "hash": "M4 9h16M4 15h16M10 3L8 21M16 3l-2 18",
 }
 
 
