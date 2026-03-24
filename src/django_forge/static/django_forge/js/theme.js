@@ -1,32 +1,79 @@
 (function () {
   var KEY = "django-forge-theme";
+  var THEME_OPTIONS = ["light", "dark", "system"];
 
-  function getPreferredTheme() {
+  function getStoredThemeMode() {
     var saved = localStorage.getItem(KEY);
-    if (saved === "light" || saved === "dark") {
+    if (THEME_OPTIONS.indexOf(saved) >= 0) {
       return saved;
     }
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    var fallback = window.__forgeDefaultTheme || "system";
+    return THEME_OPTIONS.indexOf(fallback) >= 0 ? fallback : "system";
   }
 
-  function applyTheme(theme) {
+  function resolveTheme(mode) {
+    if (mode === "system") {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    return mode;
+  }
+
+  function applyThemeMode(mode) {
+    var theme = resolveTheme(mode);
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-    localStorage.setItem(KEY, theme);
+    localStorage.setItem(KEY, mode);
+    syncThemeOptionState(mode);
   }
 
-  function toggleTheme() {
-    var current = document.documentElement.classList.contains("dark") ? "dark" : "light";
-    applyTheme(current === "dark" ? "light" : "dark");
+  function syncThemeOptionState(mode) {
+    document.querySelectorAll(".forge-theme-option").forEach(function (button) {
+      var active = button.getAttribute("data-set-theme") === mode;
+      button.classList.toggle("forge-theme-option-active", active);
+    });
+  }
+
+  function setupAccountMenu() {
+    var toggle = document.querySelector("[data-account-menu-toggle]");
+    var menu = document.querySelector("[data-account-menu]");
+    if (!toggle || !menu) return;
+
+    function closeMenu() {
+      menu.classList.add("hidden");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+
+    toggle.addEventListener("click", function () {
+      var isHidden = menu.classList.contains("hidden");
+      menu.classList.toggle("hidden", !isHidden);
+      toggle.setAttribute("aria-expanded", isHidden ? "true" : "false");
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+        closeMenu();
+      }
+    });
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    applyTheme(getPreferredTheme());
-    document.querySelectorAll("[data-theme-toggle]").forEach(function (button) {
-      button.addEventListener("click", toggleTheme);
+    var mode = getStoredThemeMode();
+    applyThemeMode(mode);
+    setupAccountMenu();
+
+    document.querySelectorAll("[data-set-theme]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        applyThemeMode(button.getAttribute("data-set-theme") || "system");
+      });
+    });
+
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", function () {
+      if (getStoredThemeMode() === "system") {
+        applyThemeMode("system");
+      }
     });
   });
 })();

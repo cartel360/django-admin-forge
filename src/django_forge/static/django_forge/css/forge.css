@@ -114,6 +114,16 @@ body {
   flex: none;
 }
 
+.forge-theme-option-active {
+  border-color: var(--forge-accent) !important;
+  color: var(--forge-accent);
+  background: color-mix(in srgb, var(--forge-accent) 10%, #fff 90%);
+}
+
+.dark .forge-theme-option-active {
+  background: color-mix(in srgb, var(--forge-accent) 18%, #0f172a 82%);
+}
+
 .forge-submit-row {
   display: flex;
   flex-wrap: wrap;

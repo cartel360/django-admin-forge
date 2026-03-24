@@ -1,31 +1,78 @@
 {% load forge_icons %}
-<aside class="w-72 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 min-h-screen p-4">
-  <div class="flex items-center justify-between mb-4">
-    <div>
+<aside class="w-72 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 min-h-screen p-4 flex flex-col">
+  <div class="flex-1 min-h-0">
+    <div class="mb-4">
       <p class="text-xs uppercase tracking-wide text-slate-500">{{ forge.brand_logo_text }}</p>
       <p class="font-semibold text-slate-900 dark:text-slate-100">{{ forge.brand_name }}</p>
     </div>
-    <button type="button" data-theme-toggle class="rounded border border-slate-300 dark:border-slate-600 px-2 py-1 text-xs text-slate-600 dark:text-slate-200">Theme</button>
-  </div>
-  {% if forge.show_sidebar_search %}
-    <input type="search" placeholder="Search navigation..." class="w-full mb-4 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm">
-  {% endif %}
-  <nav class="space-y-1">
-    <a href="{% url 'admin:index' %}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-      {% forge_icon "layout-grid" "h-4 w-4 text-slate-500" %}
-      <span>Dashboard</span>
-    </a>
-    {% for app in available_apps %}
-      <p class="pt-2 px-3 text-xs uppercase tracking-wide text-slate-500 flex items-center gap-2">
-        {% forge_icon app.icon "h-3.5 w-3.5" %}
-        <span>{{ app.name }}</span>
-      </p>
-      {% for model in app.models %}
-        <a href="{{ model.admin_url }}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
-          {% forge_icon model.icon "h-4 w-4 text-slate-500" %}
-          <span>{{ model.name }}</span>
-        </a>
+    {% if forge.show_sidebar_search %}
+      <input type="search" placeholder="Search apps and models..." class="w-full mb-4 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm">
+    {% endif %}
+    <nav class="space-y-1 overflow-y-auto pr-1">
+      <a href="{% url 'admin:index' %}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
+        {% forge_icon "layout-grid" "h-4 w-4 text-slate-500" %}
+        <span>Dashboard</span>
+      </a>
+      {% for app in available_apps %}
+        <p class="pt-2 px-3 text-xs uppercase tracking-wide text-slate-500 flex items-center gap-2">
+          {% forge_icon app.icon "h-3.5 w-3.5" %}
+          <span>{{ app.name }}</span>
+        </p>
+        {% for model in app.models %}
+          <a href="{{ model.admin_url }}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
+            {% forge_icon model.icon "h-4 w-4 text-slate-500" %}
+            <span>{{ model.name }}</span>
+          </a>
+        {% endfor %}
       {% endfor %}
-    {% endfor %}
-  </nav>
+    </nav>
+  </div>
+
+  {% if user.is_authenticated %}
+    <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 relative">
+      <button
+        type="button"
+        class="w-full flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60"
+        data-account-menu-toggle
+        aria-expanded="false"
+      >
+        <span class="flex items-center gap-2 min-w-0">
+          <span class="h-7 w-7 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center text-xs text-slate-700 dark:text-slate-200">
+            {{ user.get_username|first|upper }}
+          </span>
+          <span class="min-w-0 text-left">
+            <span class="block text-sm text-slate-800 dark:text-slate-100 truncate">{{ user.get_username }}</span>
+            {% if user.email %}<span class="block text-xs text-slate-500 truncate">{{ user.email }}</span>{% endif %}
+          </span>
+        </span>
+        {% forge_icon "chevrons-up" "h-4 w-4 text-slate-500" %}
+      </button>
+
+      <div class="hidden absolute left-0 right-0 bottom-14 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-2 z-20" data-account-menu>
+        <p class="px-2 py-1 text-[11px] uppercase tracking-wide text-slate-500">Theme</p>
+        <div class="grid grid-cols-3 gap-1 mb-2">
+          <button type="button" class="forge-theme-option text-xs rounded-md border border-slate-200 dark:border-slate-700 px-2 py-1.5" data-set-theme="light">
+            {% forge_icon "sun" "h-3.5 w-3.5 mx-auto mb-0.5" %}Light
+          </button>
+          <button type="button" class="forge-theme-option text-xs rounded-md border border-slate-200 dark:border-slate-700 px-2 py-1.5" data-set-theme="dark">
+            {% forge_icon "moon" "h-3.5 w-3.5 mx-auto mb-0.5" %}Dark
+          </button>
+          <button type="button" class="forge-theme-option text-xs rounded-md border border-slate-200 dark:border-slate-700 px-2 py-1.5" data-set-theme="system">
+            {% forge_icon "monitor" "h-3.5 w-3.5 mx-auto mb-0.5" %}System
+          </button>
+        </div>
+        {% if site_url %}
+          <a href="{{ site_url }}" class="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+            {% forge_icon "external-link" "h-4 w-4 text-slate-500" %}View site
+          </a>
+        {% endif %}
+        <a href="{% url 'admin:password_change' %}" class="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+          {% forge_icon "key" "h-4 w-4 text-slate-500" %}Change password
+        </a>
+        <a href="{% url 'admin:logout' %}" class="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20">
+          {% forge_icon "log-out" "h-4 w-4" %}Sign out
+        </a>
+      </div>
+    </div>
+  {% endif %}
 </aside>

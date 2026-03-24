@@ -24,6 +24,7 @@
         }
       }
     };
+    window.__forgeDefaultTheme = "{{ forge.default_theme|default:'system'|escapejs }}";
   </script>
   <script defer src="{% static 'django_forge/js/theme.js' %}"></script>
 {% endblock %}

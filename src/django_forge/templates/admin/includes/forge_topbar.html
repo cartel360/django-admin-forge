@@ -15,12 +15,6 @@
           >
         </div>
       {% endif %}
-      {% if user.is_authenticated %}
-        <div class="inline-flex items-center gap-2 rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 bg-white dark:bg-slate-800">
-          <span class="text-sm text-slate-600 dark:text-slate-300">{{ user.get_username }}</span>
-          <a class="text-sm text-blue-600 hover:text-blue-500" href="{% url 'admin:logout' %}">Sign out</a>
-        </div>
-      {% endif %}
     </div>
   </div>
 </header>
