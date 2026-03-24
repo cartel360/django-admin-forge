@@ -68,6 +68,248 @@ body {
   color: #e2e8f0;
 }
 
+/* Changelist table polish */
+.forge-admin #changelist table {
+  border-spacing: 0;
+  border-collapse: separate;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+.forge-grid-shell {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(2, 6, 23, 0.05);
+}
+
+.forge-grid-table {
+  width: 100%;
+}
+
+.forge-grid-header-cell {
+  display: flex;
+  align-items: center;
+}
+
+.forge-grid-sort-link,
+.forge-grid-header-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.forge-grid-sort-link:hover {
+  color: #0f172a;
+}
+
+.forge-grid-sort-indicator {
+  font-size: 0.72rem;
+  opacity: 0.9;
+}
+
+.forge-admin #changelist thead th {
+  background: #f8fafc;
+  color: #334155;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0.7rem 0.65rem;
+}
+
+.forge-admin #changelist tbody tr {
+  background: #ffffff;
+}
+
+.forge-admin #changelist tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.forge-admin #changelist tbody td,
+.forge-admin #changelist tbody th {
+  padding: 0.8rem 0.65rem;
+  font-size: 0.875rem;
+  vertical-align: middle;
+  color: #0f172a;
+}
+
+.forge-admin #changelist tbody tr:last-child td,
+.forge-admin #changelist tbody tr:last-child th {
+  border-bottom: 0;
+}
+
+.dark .forge-admin #changelist thead th {
+  background: #111827;
+  color: #cbd5e1;
+  border-bottom-color: #334155;
+}
+
+.dark .forge-grid-shell {
+  border-color: #1f2a44;
+  background: #0b1220;
+  box-shadow: none;
+}
+
+.dark .forge-admin #changelist tbody tr {
+  background: #0b1220;
+}
+
+.dark .forge-admin #changelist tbody tr:hover {
+  background: #111b2e;
+}
+
+.dark .forge-admin #changelist tbody td,
+.dark .forge-admin #changelist tbody th {
+  border-bottom-color: #1f2a44;
+}
+
+.dark .forge-grid-sort-link:hover {
+  color: #ffffff;
+}
+
+.forge-admin #changelist tbody td.action-checkbox {
+  width: 2rem;
+}
+
+.forge-admin #changelist .paginator {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+.dark .forge-admin #changelist .paginator {
+  border-top-color: #334155;
+  color: #94a3b8;
+}
+
+/* Bulk action row */
+.forge-admin #changelist-form .actions {
+  margin: 0;
+}
+
+.forge-actions-row {
+  overflow-x: auto;
+}
+
+.forge-actions-inner {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  min-width: max-content;
+}
+
+.forge-admin #changelist-form .actions label,
+.forge-actions-label {
+  color: #334155;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.forge-admin #changelist-form .actions select,
+.forge-actions-row select {
+  width: auto;
+  min-width: 16rem;
+  max-width: 22rem;
+  padding-top: 0.42rem;
+  padding-bottom: 0.42rem;
+}
+
+.forge-actions-go,
+.forge-admin #changelist-form .actions button,
+.forge-admin #changelist-form .actions input[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 0.5rem;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #1e293b;
+  padding: 0.42rem 0.72rem;
+}
+
+.forge-actions-go {
+  background: var(--forge-accent);
+  border-color: var(--forge-accent);
+  color: #ffffff;
+}
+
+.forge-actions-go:hover {
+  background: var(--forge-accent-hover);
+  border-color: var(--forge-accent-hover);
+}
+
+.dark .forge-admin #changelist-form .actions label {
+  color: #94a3b8;
+}
+
+.dark .forge-actions-go,
+.dark .forge-admin #changelist-form .actions button,
+.dark .forge-admin #changelist-form .actions input[type="submit"] {
+  border-color: #334155;
+  background: #0f172a;
+  color: #cbd5e1;
+}
+
+.dark .forge-actions-go {
+  background: var(--forge-accent);
+  border-color: var(--forge-accent);
+  color: #ffffff;
+}
+
+.dark .forge-actions-go:hover {
+  background: var(--forge-accent-hover);
+  border-color: var(--forge-accent-hover);
+}
+
+.forge-actions-counter {
+  color: #1e293b;
+  font-size: 0.82rem;
+}
+
+.forge-admin #changelist .results a {
+  color: #0f172a;
+}
+
+.forge-admin #changelist .results a:hover {
+  color: #1d4ed8;
+}
+
+.dark .forge-admin #changelist .results a {
+  color: #cbd5e1;
+}
+
+.dark .forge-admin #changelist .results a:hover {
+  color: #93c5fd;
+}
+
+.dark .forge-admin #changelist tbody td,
+.dark .forge-admin #changelist tbody th {
+  color: #e2e8f0;
+}
+
+.dark .forge-actions-counter {
+  color: #94a3b8;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
 .forge-admin input[type="text"],
 .forge-admin input[type="email"],
 .forge-admin input[type="password"],
@@ -194,6 +436,18 @@ body {
 
 .forge-accent-bg:hover {
   background: var(--forge-accent-hover);
+}
+
+.forge-accent-text {
+  color: var(--forge-accent);
+}
+
+.forge-accent-text:hover {
+  color: var(--forge-accent-hover);
+}
+
+.forge-accent-border {
+  border-color: var(--forge-accent);
 }
 
 .forge-admin main {

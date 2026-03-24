@@ -1,0 +1,38 @@
+{% load i18n forge_icons %}
+<div class="actions forge-actions-row">
+  {% block actions %}
+    <div class="forge-actions-inner">
+      {% block actions-form %}
+        <span class="forge-actions-label">{% translate "Action" %}</span>
+        {% for field in action_form %}
+          {% if field.label %}
+            <label class="sr-only" for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {% endif %}
+          {{ field }}
+        {% endfor %}
+      {% endblock %}
+
+      {% block actions-submit %}
+        <button type="submit" class="forge-actions-go" title="{% translate "Run the selected action" %}" name="index" value="{{ action_index|default:0 }}">
+          {% forge_icon "sparkles" "h-4 w-4" %}
+          {% translate "Go" %}
+        </button>
+      {% endblock %}
+
+      {% block actions-counter %}
+        {% if actions_selection_counter %}
+          <span class="forge-actions-counter action-counter" data-actions-icnt="{{ cl.result_list|length }}">{{ selection_note }}</span>
+          {% if cl.result_count != cl.result_list|length %}
+            <span class="all hidden">{{ selection_note_all }}</span>
+            <span class="question hidden">
+              <a role="button" href="#" title="{% translate "Click here to select the objects across all pages" %}">
+                {% blocktranslate with cl.result_count as total_count %}Select all {{ total_count }} {{ module_name }}{% endblocktranslate %}
+              </a>
+            </span>
+            <span class="clear hidden"><a role="button" href="#">{% translate "Clear selection" %}</a></span>
+          {% endif %}
+        {% endif %}
+      {% endblock %}
+    </div>
+  {% endblock %}
+</div>

@@ -4,6 +4,7 @@ from django.conf import settings
 
 ACCENT_HEX = {
     "blue": "#2563eb",
+    "green": "#16a34a",
     "amber": "#d97706",
     "violet": "#7c3aed",
     "emerald": "#059669",

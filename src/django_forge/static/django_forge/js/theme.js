@@ -221,6 +221,31 @@
     });
   }
 
+  function setupFiltersModal() {
+    var openBtn = document.querySelector("[data-open-filters-modal]");
+    var closeBtn = document.querySelector("[data-close-filters-modal]");
+    var modal = document.querySelector("[data-filters-modal]");
+    var overlay = document.querySelector("[data-filters-modal-overlay]");
+    if (!openBtn || !modal || !overlay) return;
+
+    function open() {
+      modal.classList.remove("hidden");
+      overlay.classList.remove("hidden");
+    }
+
+    function close() {
+      modal.classList.add("hidden");
+      overlay.classList.add("hidden");
+    }
+
+    openBtn.addEventListener("click", open);
+    if (closeBtn) closeBtn.addEventListener("click", close);
+    overlay.addEventListener("click", close);
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") close();
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     var mode = getStoredThemeMode();
     applyThemeMode(mode);
@@ -228,6 +253,7 @@
     setupToasts();
     setupSidebarSearch();
     setupGlobalSearch();
+    setupFiltersModal();
 
     document.querySelectorAll("[data-set-theme]").forEach(function (button) {
       button.addEventListener("click", function () {

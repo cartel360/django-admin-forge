@@ -1,0 +1,47 @@
+{% load i18n %}
+{% if result_hidden_fields %}
+  <div class="hiddenfields">
+    {% for item in result_hidden_fields %}{{ item }}{% endfor %}
+  </div>
+{% endif %}
+
+{% if results %}
+  <div class="results forge-grid-shell">
+    <table id="result_list" class="forge-grid-table">
+      <thead>
+        <tr>
+          {% for header in result_headers %}
+            <th scope="col"{{ header.class_attrib }}>
+              <div class="forge-grid-header-cell">
+                {% if header.sortable %}
+                  <a href="{{ header.url_primary }}" class="forge-grid-sort-link">
+                    {{ header.text|capfirst }}
+                    {% if header.sorted %}
+                      <span class="forge-grid-sort-indicator">{{ header.ascending|yesno:"↑,↓" }}</span>
+                    {% endif %}
+                  </a>
+                {% else %}
+                  <span class="forge-grid-header-text">{{ header.text|capfirst }}</span>
+                {% endif %}
+              </div>
+            </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for result in results %}
+          {% if result.form and result.form.non_field_errors %}
+            <tr>
+              <td colspan="{{ result|length }}">{{ result.form.non_field_errors }}</td>
+            </tr>
+          {% endif %}
+          <tr>
+            {% for item in result %}
+              {{ item }}
+            {% endfor %}
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endif %}
