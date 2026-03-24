@@ -1,0 +1,30 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block content %}
+<div class="flex bg-slate-50 dark:bg-slate-950">
+  {% include "admin/includes/forge_sidebar.html" %}
+  <main class="flex-1 min-h-screen">
+    {% include "admin/includes/forge_topbar.html" with subtitle="Edit and validate model data" %}
+    <section class="p-6">
+      <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>
+        {% csrf_token %}
+        <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 space-y-6">
+          {% if errors %}
+            <p class="text-sm text-red-600">{% blocktranslate count counter=errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}</p>
+            {{ adminform.form.non_field_errors }}
+          {% endif %}
+
+          {% for fieldset in adminform %}
+            {% include "admin/includes/fieldset.html" %}
+          {% endfor %}
+
+          {% block submit_buttons_bottom %}
+            {% submit_row %}
+          {% endblock %}
+        </div>
+      </form>
+    </section>
+  </main>
+</div>
+{% endblock %}

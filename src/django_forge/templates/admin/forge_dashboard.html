@@ -1,0 +1,51 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="flex bg-slate-50 dark:bg-slate-950">
+  {% include "admin/includes/forge_sidebar.html" %}
+  <main class="flex-1 min-h-screen">
+    {% include "admin/includes/forge_topbar.html" with subtitle="Overview and recent activity" %}
+    <section class="p-6 space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {% for card in stats %}
+          <article class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+            <p class="text-sm text-slate-500">{{ card.label }}</p>
+            <p class="text-3xl font-semibold text-slate-900 dark:text-slate-100 mt-2">{{ card.value }}</p>
+          </article>
+        {% endfor %}
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <article class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+          <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100 mb-3">Recent users</h2>
+          <ul class="space-y-2">
+            {% for user_obj in recent_users %}
+              <li class="flex items-center justify-between text-sm">
+                <span class="text-slate-700 dark:text-slate-200">{{ user_obj.get_username }}</span>
+                <span class="text-slate-500">{{ user_obj.date_joined|date:"M j, Y" }}</span>
+              </li>
+            {% empty %}
+              <li class="text-sm text-slate-500">No users yet.</li>
+            {% endfor %}
+          </ul>
+        </article>
+
+        <article class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+          <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100 mb-3">Model groups</h2>
+          <ul class="space-y-2">
+            {% for item in model_counts %}
+              <li class="flex items-center justify-between text-sm">
+                <span class="text-slate-700 dark:text-slate-200">{{ item.app_label }}</span>
+                <span class="text-slate-500">{{ item.total }}</span>
+              </li>
+            {% empty %}
+              <li class="text-sm text-slate-500">No model metadata found.</li>
+            {% endfor %}
+          </ul>
+        </article>
+      </div>
+    </section>
+  </main>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block content %}
+<div class="min-h-[80vh] flex items-center justify-center px-4">
+  <div class="w-full max-w-md rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-8">
+    <div class="mb-6">
+      <p class="text-xs uppercase tracking-wide text-slate-500">{{ forge.brand_logo_text }}</p>
+      <h1 class="text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ forge.brand_name }}</h1>
+      <p class="text-sm text-slate-500 mt-1">{{ forge.brand_tagline }}</p>
+    </div>
+    {% if form.errors and not form.non_field_errors %}
+      <p class="mb-4 text-sm text-red-600">{% trans "Please correct the error below." %}</p>
+    {% endif %}
+    {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+        <p class="mb-4 text-sm text-red-600">{{ error }}</p>
+      {% endfor %}
+    {% endif %}
+    <form action="{{ app_path }}" method="post" id="login-form" class="space-y-4">
+      {% csrf_token %}
+      <div>
+        <label class="block text-sm text-slate-600 dark:text-slate-300 mb-1" for="id_username">{% trans "Username" %}</label>
+        <input id="id_username" name="username" type="text" autofocus required class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-slate-900 dark:text-slate-100">
+      </div>
+      <div>
+        <label class="block text-sm text-slate-600 dark:text-slate-300 mb-1" for="id_password">{% trans "Password" %}</label>
+        <input id="id_password" name="password" type="password" required class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-slate-900 dark:text-slate-100">
+      </div>
+      <input type="hidden" name="next" value="{{ next }}">
+      <button type="submit" class="w-full rounded-lg bg-blue-600 hover:bg-blue-500 text-white py-2 font-medium">
+        {% trans "Sign in" %}
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock %}

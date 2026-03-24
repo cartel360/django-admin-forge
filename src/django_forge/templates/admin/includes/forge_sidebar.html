@@ -1,0 +1,23 @@
+<aside class="w-64 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 min-h-screen p-4">
+  <div class="flex items-center justify-between mb-4">
+    <div>
+      <p class="text-xs uppercase tracking-wide text-slate-500">{{ forge.brand_logo_text }}</p>
+      <p class="font-semibold text-slate-900 dark:text-slate-100">{{ forge.brand_name }}</p>
+    </div>
+    <button type="button" data-theme-toggle class="rounded border border-slate-300 dark:border-slate-600 px-2 py-1 text-xs text-slate-600 dark:text-slate-200">Theme</button>
+  </div>
+  {% if forge.show_sidebar_search %}
+    <input type="search" placeholder="Search navigation..." class="w-full mb-4 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm">
+  {% endif %}
+  <nav class="space-y-1">
+    <a href="{% url 'admin:index' %}" class="block rounded-md px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Dashboard</a>
+    {% for app in available_apps %}
+      <p class="pt-2 px-3 text-xs uppercase tracking-wide text-slate-500">{{ app.name }}</p>
+      {% for model in app.models %}
+        <a href="{{ model.admin_url }}" class="block rounded-md px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+          {{ model.name }}
+        </a>
+      {% endfor %}
+    {% endfor %}
+  </nav>
+</aside>

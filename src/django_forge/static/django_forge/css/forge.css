@@ -1,0 +1,58 @@
+html,
+body {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+.forge-admin #header,
+.forge-admin #nav-sidebar,
+.forge-admin .breadcrumbs {
+  display: none;
+}
+
+.forge-admin .module,
+.forge-admin .results,
+.forge-admin #result_list {
+  border: 0;
+  background: transparent;
+}
+
+.forge-admin table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.forge-admin th,
+.forge-admin td {
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0.75rem 0.5rem;
+}
+
+.dark .forge-admin th,
+.dark .forge-admin td {
+  border-bottom-color: #334155;
+  color: #e2e8f0;
+}
+
+.forge-admin input[type="text"],
+.forge-admin input[type="email"],
+.forge-admin input[type="password"],
+.forge-admin input[type="number"],
+.forge-admin textarea,
+.forge-admin select {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  background: #fff;
+}
+
+.dark .forge-admin input[type="text"],
+.dark .forge-admin input[type="email"],
+.dark .forge-admin input[type="password"],
+.dark .forge-admin input[type="number"],
+.dark .forge-admin textarea,
+.dark .forge-admin select {
+  background: #1e293b;
+  border-color: #475569;
+  color: #f8fafc;
+}

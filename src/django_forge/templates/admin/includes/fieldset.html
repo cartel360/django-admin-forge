@@ -1,0 +1,25 @@
+{% load i18n admin_urls %}
+<fieldset class="space-y-4">
+  {% if fieldset.name %}
+    <h3 class="text-sm font-semibold uppercase tracking-wide text-slate-500">{{ fieldset.name }}</h3>
+  {% endif %}
+  {% if fieldset.description %}
+    <p class="text-sm text-slate-500">{{ fieldset.description|safe }}</p>
+  {% endif %}
+  {% for line in fieldset %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {% for field in line %}
+        <div class="space-y-1">
+          {% if field.field.name %}
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-200">{{ field.field.label }}</label>
+          {% endif %}
+          {{ field.field }}
+          {% if field.field.help_text %}
+            <p class="text-xs text-slate-500">{{ field.field.help_text|safe }}</p>
+          {% endif %}
+          {{ field.field.errors }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endfor %}
+</fieldset>

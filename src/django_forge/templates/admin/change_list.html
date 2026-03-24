@@ -1,0 +1,36 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_list %}
+
+{% block content %}
+<div class="flex bg-slate-50 dark:bg-slate-950">
+  {% include "admin/includes/forge_sidebar.html" %}
+  <main class="flex-1 min-h-screen">
+    {% include "admin/includes/forge_topbar.html" with subtitle="Browse, filter and manage records" %}
+    <section class="p-6">
+      <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ cl.opts.verbose_name_plural|capfirst }}</h2>
+          {% if has_add_permission %}
+            <a href="{% url cl.opts|admin_urlname:'add' %}" class="rounded-md bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 text-sm">
+              Add {{ cl.opts.verbose_name }}
+            </a>
+          {% endif %}
+        </div>
+        {% if cl.search_fields %}
+          <form id="changelist-search" method="get" class="mb-4">
+            <input type="text" size="40" name="{{ search_var }}" value="{{ cl.query }}" id="searchbar"
+              class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm"
+              placeholder="Search {{ cl.opts.verbose_name_plural }}">
+          </form>
+        {% endif %}
+        {% if cl.result_count %}
+          {% result_list cl %}
+          {% pagination cl %}
+        {% else %}
+          <p class="text-sm text-slate-500">No results found.</p>
+        {% endif %}
+      </div>
+    </section>
+  </main>
+</div>
+{% endblock %}
