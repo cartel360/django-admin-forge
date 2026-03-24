@@ -1,4 +1,4 @@
-# django-admin-forge
+# Django Admin Forge
 
 Modern, customizable admin UI on top of Django’s admin: same models, permissions, and `ModelAdmin` patterns—upgraded layout, theming, dashboard, and navigation.
 
@@ -121,7 +121,7 @@ DJANGO_ADMIN_FORGE = {
 
 ## Menu icon overrides (`menu_icons`)
 
-Keys: `app_label`, `app_label.model` (lowercase model name), or `model` alone. Later rules in the resolver can override earlier ones; see package `icons.py` for defaults.
+Resolution order: `app_label.model_name`, then `model_name`, then `app_label`, then built-in defaults (see `django_admin_forge.icons`).
 
 ```python
 DJANGO_ADMIN_FORGE = {
