@@ -109,14 +109,26 @@
             {% endfor %}
           </ul>
         </article>
+
+        {% if dashboard_cards %}
+          {% for card in dashboard_cards %}
+            {% if card.key == "system-health" %}
+              <div class="xl:col-span-5">
+                {{ card.html|safe }}
+              </div>
+            {% endif %}
+          {% endfor %}
+        {% endif %}
       </div>
 
       {% if dashboard_cards %}
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
           {% for card in dashboard_cards %}
-            <div class="xl:col-span-6">
-              {{ card.html|safe }}
-            </div>
+            {% if card.key != "system-health" %}
+              <div class="xl:col-span-6">
+                {{ card.html|safe }}
+              </div>
+            {% endif %}
           {% endfor %}
         </div>
       {% endif %}
