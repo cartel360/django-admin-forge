@@ -1,11 +1,14 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_urls static admin_modify forge_icons %}
 
+{% block content_title %}{% endblock %}
+{% block content_subtitle %}{% endblock %}
+
 {% block content %}
 <div class="flex bg-slate-50 dark:bg-slate-950">
   {% include "admin/includes/forge_sidebar.html" %}
   <main class="flex-1 min-h-screen">
-    {% include "admin/includes/forge_topbar.html" %}
+    {% include "admin/includes/forge_topbar.html" with title="" subtitle="" %}
     <section class="p-6">
       <div class="mb-4 flex items-center justify-between gap-3">
         <div class="text-sm text-slate-500 flex items-center gap-2">
