@@ -70,7 +70,7 @@ DJANGO_FORGE = {
     "brand_name": "django-forge",
     "brand_logo_text": "FORGE",
     "brand_tagline": "Premium Django control plane",
-    "accent_color": "blue",
+    "accent_color": "green",
     "default_theme": "system",
     "show_sidebar_search": True,
     "enable_command_bar": True,

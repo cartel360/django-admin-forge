@@ -10,6 +10,16 @@ ACCENT_HEX = {
 }
 
 
+def _default_menu_tabs() -> list[dict[str, str]]:
+    return [
+        {
+            "label": "Dashboard",
+            "url_name": "admin:index",
+            "icon": "layout-grid",
+        }
+    ]
+
+
 @dataclass(frozen=True)
 class ForgeSettings:
     brand_name: str = "Forge Admin"
@@ -20,6 +30,7 @@ class ForgeSettings:
     show_sidebar_search: bool = True
     enable_command_bar: bool = True
     menu_icons: dict[str, str] = field(default_factory=dict)
+    menu_tabs: list[dict[str, str]] = field(default_factory=_default_menu_tabs)
 
     def as_context(self) -> dict:
         data = asdict(self)

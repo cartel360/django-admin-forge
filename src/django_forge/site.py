@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
 from django.shortcuts import render
-from django.urls import path
+from django.urls import NoReverseMatch, path, reverse
 from django.utils import timezone
 
 from .conf import get_forge_settings
@@ -17,6 +17,30 @@ class ForgeAdminSite(AdminSite):
     index_title = "Control Center"
     login_template = "admin/login.html"
     index_template = "admin/forge_dashboard.html"
+
+    def _build_menu_tabs(self, menu_tabs: list[dict[str, str]]) -> list[dict[str, str]]:
+        tabs = []
+        for tab in menu_tabs:
+            label = tab.get("label")
+            if not label:
+                continue
+            url = tab.get("url")
+            if not url:
+                url_name = tab.get("url_name")
+                if not url_name:
+                    continue
+                try:
+                    url = reverse(url_name)
+                except NoReverseMatch:
+                    continue
+            tabs.append(
+                {
+                    "label": label,
+                    "icon": tab.get("icon", "layout-grid"),
+                    "url": url,
+                }
+            )
+        return tabs
 
     def each_context(self, request):
         context = super().each_context(request)
@@ -44,6 +68,7 @@ class ForgeAdminSite(AdminSite):
                 "forge": forge_settings.as_context(),
                 "forge_site_header": forge_settings.brand_name,
                 "available_apps": app_list,
+                "forge_menu_tabs": self._build_menu_tabs(forge_settings.menu_tabs),
             }
         )
         return context
