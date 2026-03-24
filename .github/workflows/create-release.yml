@@ -1,0 +1,66 @@
+# Manually create an annotated git tag and a GitHub Release from the Actions tab.
+# Prerequisite: bump `version` in `pyproject.toml` on the default branch and merge it.
+# Publishing the release triggers `publish-pypi.yml`.
+
+name: Create release tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version (must match pyproject.toml), e.g. 0.1.2'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  tag-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Normalize and validate version
+        id: meta
+        run: |
+          set -euo pipefail
+          RAW="${{ inputs.version }}"
+          RAW="${RAW#v}"
+          if ! echo "$RAW" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+'; then
+            echo "::error::Version must look like 0.1.2 (optional leading v)"
+            exit 1
+          fi
+          if ! grep -q "^version = \"${RAW}\"" pyproject.toml; then
+            echo "::error::pyproject.toml must contain: version = \"${RAW}\""
+            echo "Update pyproject.toml on the default branch, merge, then re-run this workflow."
+            exit 1
+          fi
+          echo "version=$RAW" >> "$GITHUB_OUTPUT"
+          echo "tag=v${RAW}" >> "$GITHUB_OUTPUT"
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Create tag and GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          TAG="${{ steps.meta.outputs.tag }}"
+          VER="${{ steps.meta.outputs.version }}"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "::error::Tag $TAG already exists locally"
+            exit 1
+          fi
+          if git ls-remote --tags origin "refs/tags/$TAG" | grep -q .; then
+            echo "::error::Tag $TAG already exists on the remote"
+            exit 1
+          fi
+          git tag -a "$TAG" -m "Release ${VER}"
+          git push origin "$TAG"
+          gh release create "$TAG" --title "${VER}" --generate-notes

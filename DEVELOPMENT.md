@@ -84,6 +84,13 @@ Releases are published automatically when you **publish a GitHub Release** (not 
 3. **GitHub → Releases → Draft a new release** (or publish from the tag), set target to that tag, then **Publish release**.  
    The workflow builds and uploads to PyPI; no API token in GitHub secrets is required.
 
+**Or: tag + release from Actions**
+
+1. Merge your version bump on the default branch (`pyproject.toml` must already say e.g. `version = "0.1.2"`).
+2. **Actions → Create release tag → Run workflow**.
+3. Enter the same version (`0.1.2` or `v0.1.2`). The workflow checks that it matches `pyproject.toml`, then creates the annotated tag `v0.1.2`, pushes it, and runs `gh release create` with auto-generated notes.  
+   That **published** release triggers `publish-pypi.yml` the same way as a hand-made release.
+
 ### Manual upload (API token)
 
 If you do not use trusted publishing:
