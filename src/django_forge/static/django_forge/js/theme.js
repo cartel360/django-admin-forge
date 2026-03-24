@@ -59,10 +59,30 @@
     });
   }
 
+  function setupToasts() {
+    document.querySelectorAll("[data-toast]").forEach(function (toast) {
+      var close = toast.querySelector("[data-toast-close]");
+      var dismiss = function () {
+        toast.style.opacity = "0";
+        toast.style.transform = "translateY(-4px)";
+        setTimeout(function () {
+          if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+          }
+        }, 180);
+      };
+
+      toast.style.transition = "opacity 180ms ease, transform 180ms ease";
+      if (close) close.addEventListener("click", dismiss);
+      setTimeout(dismiss, 4200);
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     var mode = getStoredThemeMode();
     applyThemeMode(mode);
     setupAccountMenu();
+    setupToasts();
 
     document.querySelectorAll("[data-set-theme]").forEach(function (button) {
       button.addEventListener("click", function () {

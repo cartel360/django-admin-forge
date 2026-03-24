@@ -194,3 +194,93 @@ body {
   font-size: 0.75rem;
   color: #64748b;
 }
+
+.forge-toast-stack {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  max-width: 26rem;
+}
+
+.forge-toast {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.625rem;
+  align-items: start;
+  padding: 0.75rem 0.875rem;
+  border-radius: 0.75rem;
+  border: 1px solid #dbeafe;
+  background: #eff6ff;
+  color: #1e3a8a;
+  box-shadow: 0 12px 24px rgba(2, 6, 23, 0.16);
+}
+
+.dark .forge-toast {
+  border-color: #1e3a8a;
+  background: #0b1739;
+  color: #bfdbfe;
+}
+
+.forge-toast-success {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.forge-toast-warning {
+  border-color: #fde68a;
+  background: #fffbeb;
+  color: #92400e;
+}
+
+.forge-toast-error {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+.dark .forge-toast-success {
+  border-color: #14532d;
+  background: #052e16;
+  color: #bbf7d0;
+}
+
+.dark .forge-toast-warning {
+  border-color: #78350f;
+  background: #451a03;
+  color: #fde68a;
+}
+
+.dark .forge-toast-error {
+  border-color: #7f1d1d;
+  background: #450a0a;
+  color: #fecaca;
+}
+
+.forge-toast-icon {
+  margin-top: 0.125rem;
+  opacity: 0.9;
+}
+
+.forge-toast-body {
+  font-size: 0.875rem;
+  line-height: 1.3;
+}
+
+.forge-toast-close {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  opacity: 0.75;
+}
+
+.forge-toast-close:hover {
+  opacity: 1;
+}

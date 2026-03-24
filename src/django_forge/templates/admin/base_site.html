@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-{% load static %}
+{% load static forge_icons %}
 
 {% block title %}{{ title }} | {{ forge.brand_name|default:site_header }}{% endblock %}
 
@@ -30,6 +30,30 @@
 {% endblock %}
 
 {% block bodyclass %}forge-admin {{ block.super }}{% endblock %}
+
+{% block messages %}
+  {% if messages %}
+    <div class="forge-toast-stack" aria-live="polite" aria-atomic="true">
+      {% for message in messages %}
+        <div class="forge-toast forge-toast-{{ message.tags|default:'info' }}" data-toast>
+          <div class="forge-toast-icon">
+            {% if "success" in message.tags %}
+              {% forge_icon "sparkles" "h-4 w-4" %}
+            {% elif "warning" in message.tags %}
+              {% forge_icon "activity" "h-4 w-4" %}
+            {% elif "error" in message.tags %}
+              {% forge_icon "log-out" "h-4 w-4" %}
+            {% else %}
+              {% forge_icon "layers" "h-4 w-4" %}
+            {% endif %}
+          </div>
+          <div class="forge-toast-body">{{ message|capfirst }}</div>
+          <button type="button" class="forge-toast-close" data-toast-close aria-label="Dismiss notification">&times;</button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endblock messages %}
 
 {% block extrahead %}
   {{ block.super }}
