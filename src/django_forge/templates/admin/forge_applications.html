@@ -11,14 +11,14 @@
         <article class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
           <h2 class="text-sm uppercase tracking-wide text-slate-500 mb-3 flex items-center gap-2">
             {% forge_icon app.icon "h-4 w-4" %}
-            <span>{{ app.name }}</span>
+            <span>{{ app.name|forge_labelize }}</span>
           </h2>
           <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2">
             {% for model in app.models %}
               <a href="{{ model.admin_url }}" class="flex items-center justify-between rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800">
                 <span class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200">
                   {% forge_icon model.icon "h-4 w-4 text-slate-500" %}
-                  {{ model.name }}
+                  {{ model.name|forge_labelize }}
                 </span>
                 {% forge_icon "external-link" "h-4 w-4 text-slate-400" %}
               </a>

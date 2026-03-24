@@ -58,7 +58,7 @@
           <ul class="space-y-2">
             {% for item in model_counts %}
               <li class="flex items-center justify-between text-sm rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2">
-                <span class="text-slate-700 dark:text-slate-200">{{ item.app_label }}</span>
+                <span class="text-slate-700 dark:text-slate-200">{{ item.app_label|forge_labelize }}</span>
                 <span class="text-slate-500 text-xs bg-slate-100 dark:bg-slate-800 rounded-full px-2 py-1">{{ item.total }}</span>
               </li>
             {% empty %}

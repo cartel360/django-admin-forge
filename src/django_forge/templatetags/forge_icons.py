@@ -1,3 +1,5 @@
+import re
+
 from django import template
 from django.utils.safestring import mark_safe
 
@@ -39,3 +41,11 @@ def forge_icon(name: str, extra_class: str = ""):
         f'<path d="{path}"/></svg>'
     )
     return mark_safe(svg)
+
+
+@register.filter
+def forge_labelize(value):
+    text = str(value or "")
+    text = text.replace("_", " ")
+    text = re.sub(r"\s+", " ", text).strip()
+    return text.title()
