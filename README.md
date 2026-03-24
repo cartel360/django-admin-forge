@@ -1,64 +1,165 @@
 # django-forge
 
-`django-forge` is a modern, extensible Django admin framework designed for production SaaS and enterprise applications.
+`django-forge` is a modern, customizable Django admin framework for serious SaaS and enterprise apps.
 
-## Goals
+It keeps Django admin's reliability and model integration, while upgrading the UI/UX, theming, and developer customization surface.
 
-- Preserve Django admin's reliability and ecosystem.
-- Deliver a premium UI/UX with a modern design system.
-- Provide clean extension points for themes, components, and plugins.
-- Stay server-rendered and Django-first, with progressive enhancement.
+## Highlights
 
-## Current Status
+- Django-first admin replacement (`AdminSite`-based)
+- Branded login and modern dashboard
+- Customizable sidebar menus and app/model navigation
+- Dark, light, and system themes
+- Accent color system
+- Improved changelist, filters, bulk actions, and empty states
+- Improved add/edit form layout
 
-This repository contains:
+## Install
 
-- A reusable package scaffold in `src/django_forge/`.
-- A demo Django project in `demo/` for local development.
-- A first working MVP custom `AdminSite` with:
-  - branded login
-  - custom dashboard
-  - modern sidebar layout
-  - dark mode toggle
-  - improved changelist and change form templates
+```bash
+pip install django-forge
+```
 
-## Quickstart (Demo)
+For local development in this repository:
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
-python demo/manage.py migrate
-python demo/manage.py createsuperuser
-python demo/manage.py runserver
 ```
 
-Open: <http://127.0.0.1:8000/admin/>
+## Quick Integration
 
-## Package Integration (Early API)
+### 1) Add apps
 
-1. Add `django_forge` before `django.contrib.admin` in `INSTALLED_APPS`.
-2. Use `django_forge.site.forge_admin_site.urls` for your admin URL.
-3. Optionally configure `DJANGO_FORGE` in settings:
+```python
+INSTALLED_APPS = [
+    "django_forge",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    # your apps...
+]
+```
+
+### 2) Use Forge admin URLs
+
+```python
+from django.urls import path
+from django_forge.site import forge_admin_site
+
+urlpatterns = [
+    path("admin/", forge_admin_site.urls),
+]
+```
+
+### 3) Configure `DJANGO_FORGE` (optional but recommended)
 
 ```python
 DJANGO_FORGE = {
     "brand_name": "Forge Admin",
     "brand_logo_text": "FORGE",
-    "accent_color": "blue",
+    "brand_tagline": "Modern Django operations panel",
+    "accent_color": "green",
     "default_theme": "system",  # "light" | "dark" | "system"
     "show_sidebar_search": True,
+    "enable_command_bar": True,
 }
 ```
 
-Supported `accent_color` values include: `blue`, `green`, `amber`, `violet`, `emerald`, `teal`, `cyan`, `sky`, `indigo`, `purple`, `pink`, `rose`, `red`, `orange`, `yellow`, `lime`, `slate`, `gray`, `zinc`, `neutral`, `stone`.
+## Configuration Reference
 
-## Roadmap
+Use the `DJANGO_FORGE` setting dictionary.
 
-- Pluggable dashboard cards/widgets
-- Per-model layout customization hooks
-- Reusable UI component library
-- Enhanced filters/actions/search experiences
-- Audit/activity views and analytics widgets
-- Theme packs and organization branding
+- `brand_name` (`str`): Header brand name.
+- `brand_logo_text` (`str`): Compact sidebar/logo text.
+- `brand_tagline` (`str`): Login/subtitle branding.
+- `accent_color` (`str`): Accent token used in key actions and highlights.
+- `default_theme` (`"light" | "dark" | "system"`): Initial theme mode.
+- `show_sidebar_search` (`bool`): Sidebar search input visibility.
+- `enable_command_bar` (`bool`): Header search/command input visibility.
+- `menu_icons` (`dict[str, str]`): Overrides for app/model icons.
+- `menu_tabs` (`list[dict]`): Sidebar menu tabs (top and bottom areas).
+
+## Accent Colors
+
+Supported `accent_color` values:
+
+`blue`, `green`, `amber`, `violet`, `emerald`, `teal`, `cyan`, `sky`, `indigo`, `purple`, `pink`, `rose`, `red`, `orange`, `yellow`, `lime`, `slate`, `gray`, `zinc`, `neutral`, `stone`
+
+Example:
+
+```python
+DJANGO_FORGE = {
+    "accent_color": "rose",
+}
+```
+
+## Sidebar Menus (`menu_tabs`)
+
+By default, only `Dashboard` is shown.
+
+You can fully configure sidebar tabs:
+
+```python
+DJANGO_FORGE = {
+    "menu_tabs": [
+        {"label": "Dashboard", "url_name": "admin:index", "icon": "layout-grid"},
+        {"label": "Applications", "url_name": "admin:forge-applications", "icon": "layers"},
+        {"label": "Users", "url_name": "admin:auth_user_changelist", "icon": "user"},
+        {"label": "Documentation", "url": "/docs/", "icon": "external-link"},
+    ]
+}
+```
+
+Each tab supports:
+
+- `label` (required)
+- `url_name` (reverse name) or `url` (direct URL)
+- `icon` (optional, defaults to `layout-grid`)
+
+## Menu Icon Overrides (`menu_icons`)
+
+You can override app/model icons by key:
+
+```python
+DJANGO_FORGE = {
+    "menu_icons": {
+        "auth": "shield",                # app-level
+        "auth.user": "user",             # model-level
+        "auth.group": "users",
+        "demo_app.customer": "building",
+    }
+}
+```
+
+Resolution order:
+1. `app_label.model_name`
+2. `model_name`
+3. `app_label`
+4. built-in defaults
+
+## Demo Project (this repo)
+
+```bash
+python demo/manage.py migrate
+python demo/manage.py createsuperuser
+python demo/manage.py runserver
+```
+
+Open: [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
+
+## Status and Roadmap
+
+Current implementation includes custom site templates, dashboard, apps page, collapsible sidebar, filters modal, improved forms/changelists, search helpers, and theme controls.
+
+Planned next:
+
+- Saved views/filters
+- Dashboard widget API expansion
+- Accessibility and keyboard navigation improvements
+- Packaging/build pipeline polish for production release
 
