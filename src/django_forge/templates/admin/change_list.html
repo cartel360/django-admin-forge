@@ -1,5 +1,5 @@
 {% extends "admin/base_site.html" %}
-{% load i18n admin_urls static admin_list %}
+{% load i18n admin_urls static admin_list forge_icons %}
 
 {% block content %}
 <div class="flex bg-slate-50 dark:bg-slate-950">
@@ -12,7 +12,10 @@
           <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ cl.opts.verbose_name_plural|capfirst }}</h2>
           {% if has_add_permission %}
             <a href="{% url cl.opts|admin_urlname:'add' %}" class="rounded-md forge-accent-bg text-white px-3 py-2 text-sm">
-              Add {{ cl.opts.verbose_name }}
+              <span class="inline-flex items-center gap-1.5">
+                {% forge_icon "shopping-bag" "h-4 w-4" %}
+                <span>Add {{ cl.opts.verbose_name }}</span>
+              </span>
             </a>
           {% endif %}
         </div>

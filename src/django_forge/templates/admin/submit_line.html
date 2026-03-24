@@ -1,0 +1,43 @@
+{% load i18n admin_urls forge_icons %}
+<div class="submit-row forge-submit-row">
+{% block submit-row %}
+{% if show_save %}
+  <button type="submit" class="forge-btn forge-btn-primary" name="_save">
+    {% forge_icon "sparkles" "h-4 w-4" %}
+    <span>{% translate 'Save' %}</span>
+  </button>
+{% endif %}
+{% if show_save_as_new %}
+  <button type="submit" class="forge-btn forge-btn-secondary" name="_saveasnew">
+    {% forge_icon "file" "h-4 w-4" %}
+    <span>{% translate 'Save as new' %}</span>
+  </button>
+{% endif %}
+{% if show_save_and_add_another %}
+  <button type="submit" class="forge-btn forge-btn-secondary" name="_addanother">
+    {% forge_icon "shopping-bag" "h-4 w-4" %}
+    <span>{% translate 'Save and add another' %}</span>
+  </button>
+{% endif %}
+{% if show_save_and_continue %}
+  <button type="submit" class="forge-btn forge-btn-secondary" name="_continue">
+    {% forge_icon "activity" "h-4 w-4" %}
+    <span>{% if can_change %}{% translate 'Save and continue editing' %}{% else %}{% translate 'Save and view' %}{% endif %}</span>
+  </button>
+{% endif %}
+{% if show_close %}
+    {% url opts|admin_urlname:'changelist' as changelist_url %}
+    <a href="{% add_preserved_filters changelist_url %}" class="forge-btn forge-btn-ghost">
+      {% forge_icon "layers" "h-4 w-4" %}
+      <span>{% translate 'Close' %}</span>
+    </a>
+{% endif %}
+{% if show_delete_link and original %}
+    {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+    <a href="{% add_preserved_filters delete_url %}" class="forge-btn forge-btn-danger">
+      {% forge_icon "file" "h-4 w-4" %}
+      <span>{% translate "Delete" %}</span>
+    </a>
+{% endif %}
+{% endblock %}
+</div>

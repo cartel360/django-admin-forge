@@ -74,4 +74,10 @@ DJANGO_FORGE = {
     "default_theme": "system",
     "show_sidebar_search": True,
     "enable_command_bar": True,
+    "menu_icons": {
+        "auth": "shield",
+        "auth.user": "user",
+        "auth.group": "users",
+        "demo_app.customer": "building",
+    },
 }

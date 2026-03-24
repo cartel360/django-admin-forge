@@ -8,6 +8,7 @@ from django.utils import timezone
 
 from .conf import get_forge_settings
 from .hooks import registry
+from .icons import resolve_menu_icon
 
 
 class ForgeAdminSite(AdminSite):
@@ -20,10 +21,29 @@ class ForgeAdminSite(AdminSite):
     def each_context(self, request):
         context = super().each_context(request)
         forge_settings = get_forge_settings()
+        app_list = []
+        for app in context.get("available_apps", []):
+            app_label = (app.get("app_label") or "").lower()
+            app_copy = {**app, "icon": resolve_menu_icon(forge_settings.menu_icons, app_label=app_label)}
+            models = []
+            for model in app.get("models", []):
+                object_name = (model.get("object_name") or model.get("name") or "").lower()
+                model_copy = {
+                    **model,
+                    "icon": resolve_menu_icon(
+                        forge_settings.menu_icons,
+                        app_label=app_label,
+                        model_name=object_name,
+                    ),
+                }
+                models.append(model_copy)
+            app_copy["models"] = models
+            app_list.append(app_copy)
         context.update(
             {
                 "forge": forge_settings.as_context(),
                 "forge_site_header": forge_settings.brand_name,
+                "available_apps": app_list,
             }
         )
         return context
@@ -50,9 +70,9 @@ class ForgeAdminSite(AdminSite):
             "title": "Dashboard",
             "now": now,
             "stats": [
-                {"label": "Total users", "value": user_count},
-                {"label": "Staff users", "value": staff_count},
-                {"label": "Active users", "value": active_count},
+                {"label": "Total users", "value": user_count, "icon": "users"},
+                {"label": "Staff users", "value": staff_count, "icon": "shield"},
+                {"label": "Active users", "value": active_count, "icon": "activity"},
             ],
             "recent_users": recent_users,
             "model_counts": model_counts,

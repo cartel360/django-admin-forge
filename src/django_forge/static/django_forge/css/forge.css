@@ -100,3 +100,79 @@ body {
 .forge-admin input[type="search"]::placeholder {
   color: #94a3b8;
 }
+
+.forge-icon {
+  display: inline-block;
+  flex: none;
+}
+
+.forge-submit-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.forge-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+}
+
+.forge-btn-primary {
+  background: var(--forge-accent);
+  color: #fff;
+}
+
+.forge-btn-primary:hover {
+  background: var(--forge-accent-hover);
+}
+
+.forge-btn-secondary {
+  background: #fff;
+  border-color: #cbd5e1;
+  color: #334155;
+}
+
+.forge-btn-ghost {
+  background: #fff;
+  border-color: #e2e8f0;
+  color: #475569;
+}
+
+.forge-btn-danger {
+  background: #fff1f2;
+  border-color: #fecdd3;
+  color: #be123c;
+}
+
+.dark .forge-btn-secondary,
+.dark .forge-btn-ghost {
+  background: #0f172a;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+.dark .forge-btn-danger {
+  background: #3a0f1a;
+  border-color: #7f1d1d;
+  color: #fecdd3;
+}
+
+.forge-admin #result_list tbody th a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.forge-admin #result_list tbody th a::before {
+  content: "✎";
+  font-size: 0.75rem;
+  color: #64748b;
+}

@@ -1,4 +1,4 @@
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 
 from django.conf import settings
 
@@ -19,6 +19,7 @@ class ForgeSettings:
     default_theme: str = "system"  # light | dark | system
     show_sidebar_search: bool = True
     enable_command_bar: bool = True
+    menu_icons: dict[str, str] = field(default_factory=dict)
 
     def as_context(self) -> dict:
         data = asdict(self)
