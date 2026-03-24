@@ -10,14 +10,20 @@
       <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ cl.opts.verbose_name_plural|capfirst }}</h2>
-          {% if has_add_permission %}
-            <a href="{% url cl.opts|admin_urlname:'add' %}" class="rounded-md forge-accent-bg text-white px-3 py-2 text-sm">
-              <span class="inline-flex items-center gap-1.5">
-                {% forge_icon "shopping-bag" "h-4 w-4" %}
-                <span>Add {{ cl.opts.verbose_name }}</span>
-              </span>
+          <div class="flex items-center gap-2">
+            <a href="#forge-filters-panel" class="rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 inline-flex items-center gap-1.5">
+              {% forge_icon "filter" "h-4 w-4" %}
+              <span>Filters</span>
             </a>
-          {% endif %}
+            {% if has_add_permission %}
+              <a href="{% url cl.opts|admin_urlname:'add' %}" class="rounded-md forge-accent-bg text-white px-3 py-2 text-sm">
+                <span class="inline-flex items-center gap-1.5">
+                  {% forge_icon "plus" "h-4 w-4" %}
+                  <span>Add {{ cl.opts.verbose_name }}</span>
+                </span>
+              </a>
+            {% endif %}
+          </div>
         </div>
         {% if cl.search_fields %}
           <form id="changelist-search" method="get" class="mb-4">
@@ -44,11 +50,53 @@
             {% admin_actions %}
           </div>
         {% endif %}
+        <div id="forge-filters-panel" class="mb-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 p-3">
+          <p class="mb-2 text-xs uppercase tracking-wide text-slate-500">Filters</p>
+          {% if cl.filter_specs %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {% for spec in cl.filter_specs %}
+                <div class="rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-2">
+                  <p class="text-xs font-semibold uppercase tracking-wide text-slate-500 mb-1">{{ spec.title }}</p>
+                  <ul class="space-y-1">
+                    {% for choice in spec.choices %}
+                      <li>
+                        <a href="{{ choice.query_string }}" class="text-sm {% if choice.selected %}text-emerald-600 dark:text-emerald-400 font-medium{% else %}text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white{% endif %}">
+                          {{ choice.display }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-sm text-slate-500">No filters configured for this model.</p>
+          {% endif %}
+        </div>
+
         {% if cl.result_count %}
           {% result_list cl %}
           {% pagination cl %}
         {% else %}
-          <p class="text-sm text-slate-500">No results found.</p>
+          <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/40 py-16 px-6 text-center">
+            <div class="mx-auto h-16 w-16 rounded-full border border-slate-200 dark:border-slate-700 flex items-center justify-center mb-4 text-slate-500">
+              {% forge_icon "inbox" "h-7 w-7" %}
+            </div>
+            <h3 class="text-xl font-semibold text-slate-900 dark:text-slate-100">No results found</h3>
+            <p class="text-sm text-slate-500 mt-2">This page yielded no results. Create a new item or reset your filters.</p>
+            <div class="mt-5 flex flex-wrap justify-center gap-2">
+              {% if has_add_permission %}
+                <a href="{% url cl.opts|admin_urlname:'add' %}" class="inline-flex items-center gap-1.5 rounded-md forge-accent-bg text-white px-3 py-2 text-sm">
+                  {% forge_icon "plus" "h-4 w-4" %}
+                  <span>Add {{ cl.opts.verbose_name }}</span>
+                </a>
+              {% endif %}
+              <a href="{{ request.path }}" class="inline-flex items-center gap-1.5 rounded-md border border-slate-300 dark:border-slate-700 px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+                {% forge_icon "filter" "h-4 w-4" %}
+                <span>Reset filters</span>
+              </a>
+            </div>
+          </div>
         {% endif %}
       </div>
     </section>
