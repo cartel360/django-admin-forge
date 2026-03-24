@@ -7,6 +7,7 @@ body {
   background: #f8fafc;
 }
 
+.dark html,
 .dark body {
   background: #020617;
 }
@@ -18,6 +19,13 @@ body {
   max-width: none;
   margin: 0;
   padding: 0;
+  background: #f8fafc;
+}
+
+.dark .forge-admin #container,
+.dark .forge-admin #main,
+.dark .forge-admin #content {
+  background: #020617;
 }
 
 .forge-admin #header,
