@@ -7,6 +7,13 @@
   <main class="flex-1 min-h-screen">
     {% include "admin/includes/forge_topbar.html" with subtitle="Overview and recent activity" %}
     <section class="px-4 md:px-6 py-6 space-y-6">
+      <div class="flex items-center justify-end">
+        <a href="{% url 'admin:forge-applications' %}" class="inline-flex items-center gap-2 rounded-md forge-accent-bg text-white px-3 py-2 text-sm">
+          {% forge_icon "layers" "h-4 w-4" %}
+          <span>Open applications</span>
+        </a>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4">
         {% for card in stats %}
           <article class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 md:col-span-1 xl:col-span-2">

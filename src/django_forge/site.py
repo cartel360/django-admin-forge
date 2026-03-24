@@ -38,6 +38,7 @@ class ForgeAdminSite(AdminSite):
                     "label": label,
                     "icon": tab.get("icon", "layout-grid"),
                     "url": url,
+                    "url_name": tab.get("url_name", ""),
                 }
             )
         return tabs
@@ -71,6 +72,16 @@ class ForgeAdminSite(AdminSite):
                 "forge_menu_tabs": self._build_menu_tabs(forge_settings.menu_tabs),
             }
         )
+        context["forge_menu_tabs_top"] = [
+            tab
+            for tab in context["forge_menu_tabs"]
+            if (tab.get("label", "").lower() != "applications" and tab.get("url_name") != "admin:forge-applications")
+        ]
+        context["forge_menu_tabs_bottom"] = [
+            tab
+            for tab in context["forge_menu_tabs"]
+            if (tab.get("label", "").lower() == "applications" or tab.get("url_name") == "admin:forge-applications")
+        ]
         return context
 
     def get_urls(self):
@@ -78,6 +89,7 @@ class ForgeAdminSite(AdminSite):
         custom = [
             path("", self.admin_view(self.dashboard_view), name="index"),
             path("dashboard/", self.admin_view(self.dashboard_view), name="forge-dashboard"),
+            path("applications/", self.admin_view(self.applications_view), name="forge-applications"),
         ]
         return custom + urls
 
@@ -113,6 +125,13 @@ class ForgeAdminSite(AdminSite):
         context["recent_users_url"] = recent_users_url
         context["dashboard_cards"] = registry.get_rendered_dashboard_cards(request, context)
         return render(request, "admin/forge_dashboard.html", context)
+
+    def applications_view(self, request):
+        context = {
+            **self.each_context(request),
+            "title": "Applications",
+        }
+        return render(request, "admin/forge_applications.html", context)
 
 
 forge_admin_site = ForgeAdminSite(name="forge_admin")

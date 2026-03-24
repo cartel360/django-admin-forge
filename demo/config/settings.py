@@ -80,4 +80,8 @@ DJANGO_FORGE = {
         "auth.group": "users",
         "demo_app.customer": "building",
     },
+    "menu_tabs": [
+        {"label": "Dashboard", "url_name": "admin:index", "icon": "layout-grid"},
+        {"label": "Applications", "url_name": "admin:forge-applications", "icon": "layers"},
+    ],
 }

@@ -9,7 +9,7 @@
       <input type="search" placeholder="Search apps and models..." class="w-full mb-4 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm">
     {% endif %}
     <nav class="space-y-1 overflow-y-auto pr-1">
-      {% for tab in forge_menu_tabs %}
+      {% for tab in forge_menu_tabs_top %}
         <a href="{{ tab.url }}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm border border-transparent {% if request.path == tab.url %}text-emerald-600 dark:text-emerald-400 bg-slate-100 dark:bg-slate-800{% else %}text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700{% endif %}">
           {% forge_icon tab.icon "h-4 w-4 text-slate-500" %}
           <span>{{ tab.label }}</span>
@@ -22,6 +22,19 @@
       {% endfor %}
     </nav>
   </div>
+
+  {% if forge_menu_tabs_bottom %}
+    <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800">
+      <nav class="space-y-1 pr-1">
+        {% for tab in forge_menu_tabs_bottom %}
+          <a href="{{ tab.url }}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm border border-transparent {% if request.path == tab.url %}text-emerald-600 dark:text-emerald-400 bg-slate-100 dark:bg-slate-800{% else %}text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700{% endif %}">
+            {% forge_icon tab.icon "h-4 w-4 text-slate-500" %}
+            <span>{{ tab.label }}</span>
+          </a>
+        {% endfor %}
+      </nav>
+    </div>
+  {% endif %}
 
   {% if user.is_authenticated %}
     <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 relative">
