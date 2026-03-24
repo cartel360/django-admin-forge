@@ -62,26 +62,37 @@ Demo settings live in `demo/config/settings.py` (`DJANGO_ADMIN_FORGE` examples).
 
 ## Build and publish (maintainers)
 
-### Artifacts
+### GitHub Actions → PyPI (recommended)
 
-```bash
-python -m build
-twine check dist/*
-```
+Releases are published automatically when you **publish a GitHub Release** (not a draft).
 
-Pass **file globs** to `twine check`, not the `dist` directory alone: `twine check dist/*`.
+**One-time setup**
 
-### Upload
+1. On GitHub: **Settings → Environments → New environment** named exactly `pypi`.  
+   Optional: add required reviewers or deployment branches for extra safety.
+
+2. On [pypi.org](https://pypi.org/manage/account/publishing/): add a **trusted publisher** for this package:
+   - **PyPI project name:** `django-admin-forge` (must match `pyproject.toml` `[project] name`).
+   - **Owner** / **Repository:** your GitHub user or org and repo slug.
+   - **Workflow name:** `publish-pypi.yml` (the file under `.github/workflows/`).
+   - **Environment name:** `pypi` (must match the workflow job).
+
+**Each release**
+
+1. Bump `version` in `pyproject.toml` and merge to your default branch.
+2. Create a **tag** that matches the release (for example `v0.2.0` when `version = "0.2.0"`).
+3. **GitHub → Releases → Draft a new release** (or publish from the tag), set target to that tag, then **Publish release**.  
+   The workflow builds and uploads to PyPI; no API token in GitHub secrets is required.
+
+### Manual upload (API token)
+
+If you do not use trusted publishing:
 
 1. Bump `version` in `pyproject.toml`.
-2. Install tooling: `pip install ".[publish]"` (or `pip install build twine`).
-3. `twine upload dist/*` (use API token user `__token__`).
+2. `python -m build` then `twine check dist/*` (use globs: `dist/*`, not the `dist` folder path alone).
+3. `twine upload dist/*` with username `__token__` and a PyPI API token.
 
 Optional dry run on [TestPyPI](https://test.pypi.org/): `twine upload --repository testpypi dist/*`.
-
-### Trusted publishing (GitHub Actions)
-
-If you use PyPI **trusted publishing**, the workflow name you register on PyPI must match the workflow **file** under `.github/workflows/` (for example `publish.yml`) and the repository you authorize.
 
 ## Contributing
 
