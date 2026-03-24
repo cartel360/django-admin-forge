@@ -17,6 +17,8 @@ class ForgeAdminSite(AdminSite):
     index_title = "Control Center"
     login_template = "admin/login.html"
     index_template = "admin/forge_dashboard.html"
+    password_change_template = "admin/password_change_form.html"
+    password_change_done_template = "admin/password_change_done.html"
 
     def _build_menu_tabs(self, menu_tabs: list[dict[str, str]]) -> list[dict[str, str]]:
         tabs = []
