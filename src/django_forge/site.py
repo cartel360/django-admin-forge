@@ -1,4 +1,6 @@
 from django.contrib.admin import AdminSite
+from django.contrib.admin.models import ADDITION, CHANGE, DELETION, LogEntry
+from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
@@ -114,6 +116,7 @@ class ForgeAdminSite(AdminSite):
         return custom + urls
 
     def dashboard_view(self, request):
+        forge_settings = get_forge_settings()
         User = get_user_model()
         now = timezone.now()
         user_count = User.objects.count()
@@ -121,18 +124,69 @@ class ForgeAdminSite(AdminSite):
         active_count = User.objects.filter(is_active=True).count()
         recent_users = User.objects.order_by("-date_joined")[:5]
         model_counts = ContentType.objects.values("app_label").annotate(total=Count("id")).order_by("-total")[:6]
+        recent_actions_qs = LogEntry.objects.select_related("user", "content_type").order_by("-action_time")[:8]
+
+        action_labels = {
+            ADDITION: "Created",
+            CHANGE: "Updated",
+            DELETION: "Deleted",
+        }
+
+        recent_actions = []
+        for entry in recent_actions_qs:
+            recent_actions.append(
+                {
+                    "user": entry.user.get_username() if entry.user else "System",
+                    "object_repr": entry.object_repr,
+                    "content_type": str(entry.content_type) if entry.content_type else "Object",
+                    "action_label": action_labels.get(entry.action_flag, "Action"),
+                    "action_time": entry.action_time,
+                }
+            )
+
+        default_stats = [
+            {"label": "Total users", "value": user_count, "icon": "users", "hint": "All user accounts"},
+            {"label": "Staff users", "value": staff_count, "icon": "shield", "hint": "Back-office operators"},
+            {"label": "Active users", "value": active_count, "icon": "activity", "hint": "Enabled accounts"},
+        ]
+        custom_stats = []
+        for card in forge_settings.dashboard_analytics_cards:
+            if not card.get("label"):
+                continue
+            value = card.get("value")
+            app_label = card.get("app_label")
+            model_name = card.get("model")
+            metric = card.get("metric", "count")
+            queryset_filter = card.get("queryset_filter", {})
+            if app_label and model_name:
+                try:
+                    model_cls = apps.get_model(str(app_label), str(model_name))
+                    queryset = model_cls.objects.filter(**queryset_filter)
+                    if metric == "count":
+                        value = queryset.count()
+                except Exception:
+                    # Ignore invalid metric config and fall back to provided value.
+                    if value is None:
+                        value = "—"
+            custom_stats.append(
+                {
+                    "label": str(card.get("label")),
+                    "value": value if value is not None else "—",
+                    "icon": card.get("icon", "activity"),
+                    "hint": card.get("hint", ""),
+                    "trend": card.get("trend", ""),
+                }
+            )
+        dashboard_stats = custom_stats or default_stats
 
         context = {
             **self.each_context(request),
             "title": "Dashboard",
             "now": now,
-            "stats": [
-                {"label": "Total users", "value": user_count, "icon": "users"},
-                {"label": "Staff users", "value": staff_count, "icon": "shield"},
-                {"label": "Active users", "value": active_count, "icon": "activity"},
-            ],
+            "stats": dashboard_stats,
             "recent_users": recent_users,
             "model_counts": model_counts,
+            "recent_actions": recent_actions,
         }
         recent_users_url = None
         for app in context.get("available_apps", []):

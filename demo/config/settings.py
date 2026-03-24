@@ -84,4 +84,32 @@ DJANGO_FORGE = {
         {"label": "Dashboard", "url_name": "admin:index", "icon": "layout-grid"},
         {"label": "Applications", "url_name": "admin:forge-applications", "icon": "layers"},
     ],
+    "dashboard_analytics_cards": [
+        {
+            "label": "Customers",
+            "app_label": "demo_app",
+            "model": "Customer",
+            "metric": "count",
+            "icon": "users",
+            "hint": "Total customer records",
+        },
+        {
+            "label": "Active customers",
+            "app_label": "demo_app",
+            "model": "Customer",
+            "metric": "count",
+            "queryset_filter": {"is_active": True},
+            "icon": "activity",
+            "hint": "is_active = true",
+        },
+        {
+            "label": "Staff users",
+            "app_label": "auth",
+            "model": "User",
+            "metric": "count",
+            "queryset_filter": {"is_staff": True},
+            "icon": "shield",
+            "hint": "System operators",
+        },
+    ],
 }

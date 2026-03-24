@@ -83,6 +83,7 @@ Use the `DJANGO_FORGE` setting dictionary.
 - `enable_command_bar` (`bool`): Header search/command input visibility.
 - `menu_icons` (`dict[str, str]`): Overrides for app/model icons.
 - `menu_tabs` (`list[dict]`): Sidebar menu tabs (top and bottom areas).
+- `dashboard_analytics_cards` (`list[dict]`): Override dashboard KPI cards for marketing/business snapshots.
 
 ## Accent Colors
 
@@ -141,6 +142,43 @@ Resolution order:
 2. `model_name`
 3. `app_label`
 4. built-in defaults
+
+## Dashboard Analytics Cards
+
+You can supply custom KPI cards for the dashboard hero section using real model data:
+
+```python
+DJANGO_FORGE = {
+    "dashboard_analytics_cards": [
+        {
+            "label": "Customers",
+            "app_label": "demo_app",
+            "model": "Customer",
+            "metric": "count",
+            "icon": "users",
+            "hint": "Total customer records",
+        },
+        {
+            "label": "Active customers",
+            "app_label": "demo_app",
+            "model": "Customer",
+            "metric": "count",
+            "queryset_filter": {"is_active": True},
+            "icon": "activity",
+            "hint": "is_active = true",
+        },
+    ]
+}
+```
+
+Each card supports:
+- `label` (required)
+- `app_label` and `model` for dynamic model-based metrics
+- `metric` (currently supports `count`)
+- `queryset_filter` (optional exact Django ORM filters)
+- `value` (optional fallback/manual value)
+- `icon`
+- `hint` (or `trend`)
 
 ## Demo Project (this repo)
 
