@@ -11,7 +11,7 @@
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ cl.opts.verbose_name_plural|capfirst }}</h2>
           {% if has_add_permission %}
-            <a href="{% url cl.opts|admin_urlname:'add' %}" class="rounded-md bg-blue-600 hover:bg-blue-500 text-white px-3 py-2 text-sm">
+            <a href="{% url cl.opts|admin_urlname:'add' %}" class="rounded-md forge-accent-bg text-white px-3 py-2 text-sm">
               Add {{ cl.opts.verbose_name }}
             </a>
           {% endif %}
@@ -22,6 +22,24 @@
               class="w-full rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-sm"
               placeholder="Search {{ cl.opts.verbose_name_plural }}">
           </form>
+        {% endif %}
+        {% if cl.filter_specs %}
+          <div class="mb-4 flex flex-wrap items-center gap-2">
+            <span class="text-xs uppercase tracking-wide text-slate-500">Active filters</span>
+            {% for spec in cl.filter_specs %}
+              {% for key, value in spec.used_parameters.items %}
+                <span class="inline-flex items-center rounded-full bg-slate-100 dark:bg-slate-800 px-3 py-1 text-xs text-slate-700 dark:text-slate-200">
+                  {{ key }}: {{ value }}
+                </span>
+              {% endfor %}
+            {% endfor %}
+          </div>
+        {% endif %}
+        {% if action_form and actions_on_top and cl.show_admin_actions %}
+          <div class="mb-4 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 p-3">
+            <p class="mb-2 text-xs uppercase tracking-wide text-slate-500">Bulk actions</p>
+            {% admin_actions %}
+          </div>
         {% endif %}
         {% if cl.result_count %}
           {% result_list cl %}

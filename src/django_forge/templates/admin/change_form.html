@@ -7,6 +7,17 @@
   <main class="flex-1 min-h-screen">
     {% include "admin/includes/forge_topbar.html" with subtitle="Edit and validate model data" %}
     <section class="p-6">
+      <nav class="mb-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3">
+        <ul class="flex flex-wrap gap-2">
+          {% for fieldset in adminform %}
+            <li>
+              <a href="#fieldset-{{ forloop.counter }}" class="inline-flex rounded-md border border-slate-200 dark:border-slate-700 px-3 py-1.5 text-xs text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                {{ fieldset.name|default:"Section"|capfirst }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
       <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>
         {% csrf_token %}
         <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 space-y-6">
@@ -19,9 +30,11 @@
             {% include "admin/includes/fieldset.html" %}
           {% endfor %}
 
-          {% block submit_buttons_bottom %}
-            {% submit_row %}
-          {% endblock %}
+          <div class="sticky bottom-0 z-10 -mx-4 -mb-4 mt-6 border-t border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 px-4 py-3 backdrop-blur">
+            {% block submit_buttons_bottom %}
+              {% submit_row %}
+            {% endblock %}
+          </div>
         </div>
       </form>
     </section>

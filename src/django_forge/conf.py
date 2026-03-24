@@ -2,6 +2,13 @@ from dataclasses import asdict, dataclass
 
 from django.conf import settings
 
+ACCENT_HEX = {
+    "blue": "#2563eb",
+    "amber": "#d97706",
+    "violet": "#7c3aed",
+    "emerald": "#059669",
+}
+
 
 @dataclass(frozen=True)
 class ForgeSettings:
@@ -14,7 +21,9 @@ class ForgeSettings:
     enable_command_bar: bool = True
 
     def as_context(self) -> dict:
-        return asdict(self)
+        data = asdict(self)
+        data["accent_hex"] = ACCENT_HEX.get(self.accent_color, ACCENT_HEX["blue"])
+        return data
 
 
 def get_forge_settings() -> ForgeSettings:

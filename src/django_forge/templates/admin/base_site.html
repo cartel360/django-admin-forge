@@ -29,3 +29,13 @@
 {% endblock %}
 
 {% block bodyclass %}forge-admin {{ block.super }}{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <style>
+    :root {
+      --forge-accent: {{ forge.accent_hex|default:"#2563eb" }};
+      --forge-accent-hover: color-mix(in srgb, var(--forge-accent) 86%, #000 14%);
+    }
+  </style>
+{% endblock %}

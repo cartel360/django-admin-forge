@@ -7,6 +7,7 @@ from django.urls import path
 from django.utils import timezone
 
 from .conf import get_forge_settings
+from .hooks import registry
 
 
 class ForgeAdminSite(AdminSite):
@@ -56,6 +57,7 @@ class ForgeAdminSite(AdminSite):
             "recent_users": recent_users,
             "model_counts": model_counts,
         }
+        context["dashboard_cards"] = registry.get_rendered_dashboard_cards(request, context)
         return render(request, "admin/forge_dashboard.html", context)
 
 

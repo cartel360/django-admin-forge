@@ -56,3 +56,11 @@ body {
   border-color: #475569;
   color: #f8fafc;
 }
+
+.forge-accent-bg {
+  background: var(--forge-accent);
+}
+
+.forge-accent-bg:hover {
+  background: var(--forge-accent-hover);
+}

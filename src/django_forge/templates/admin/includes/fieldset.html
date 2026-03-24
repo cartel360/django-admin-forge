@@ -1,5 +1,5 @@
 {% load i18n admin_urls %}
-<fieldset class="space-y-4">
+<fieldset id="fieldset-{{ forloop.counter }}" class="space-y-4 scroll-mt-24">
   {% if fieldset.name %}
     <h3 class="text-sm font-semibold uppercase tracking-wide text-slate-500">{{ fieldset.name }}</h3>
   {% endif %}
