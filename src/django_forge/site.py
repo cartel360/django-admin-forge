@@ -82,6 +82,24 @@ class ForgeAdminSite(AdminSite):
             for tab in context["forge_menu_tabs"]
             if (tab.get("label", "").lower() == "applications" or tab.get("url_name") == "admin:forge-applications")
         ]
+        search_index = []
+        for tab in context["forge_menu_tabs"]:
+            if tab.get("label") and tab.get("url"):
+                search_index.append({"label": tab["label"], "url": tab["url"], "kind": "tab"})
+        for app in app_list:
+            app_url = app.get("app_url")
+            if app.get("name") and app_url:
+                search_index.append({"label": app["name"], "url": app_url, "kind": "app"})
+            for model in app.get("models", []):
+                if model.get("name") and model.get("admin_url"):
+                    search_index.append(
+                        {
+                            "label": f"{app.get('name', '')} / {model['name']}",
+                            "url": model["admin_url"],
+                            "kind": "model",
+                        }
+                    )
+        context["forge_search_index"] = search_index
         return context
 
     def get_urls(self):

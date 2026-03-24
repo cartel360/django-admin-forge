@@ -64,3 +64,8 @@
     }
   </style>
 {% endblock %}
+
+{% block extrabody %}
+  {{ block.super }}
+  {{ forge_search_index|json_script:"forge-search-index" }}
+{% endblock %}

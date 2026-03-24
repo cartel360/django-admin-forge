@@ -11,8 +11,10 @@
           <input
             type="search"
             placeholder="Search models, records, commands..."
+            data-global-search
             class="rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 pl-12 pr-3 py-2 text-sm w-full sm:w-80 focus:outline-none focus:ring-2 focus:ring-slate-300 dark:focus:ring-slate-600"
           >
+          <div class="hidden absolute z-30 mt-2 w-full rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg p-1 max-h-72 overflow-auto" data-global-search-results></div>
         </div>
       {% endif %}
     </div>
