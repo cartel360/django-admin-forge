@@ -57,6 +57,15 @@ class ForgeAdminSite(AdminSite):
             "recent_users": recent_users,
             "model_counts": model_counts,
         }
+        recent_users_url = None
+        for app in context.get("available_apps", []):
+            for model in app.get("models", []):
+                if model.get("object_name") == "User":
+                    recent_users_url = model.get("admin_url")
+                    break
+            if recent_users_url:
+                break
+        context["recent_users_url"] = recent_users_url
         context["dashboard_cards"] = registry.get_rendered_dashboard_cards(request, context)
         return render(request, "admin/forge_dashboard.html", context)
 

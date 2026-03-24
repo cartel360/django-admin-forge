@@ -64,3 +64,11 @@ body {
 .forge-accent-bg:hover {
   background: var(--forge-accent-hover);
 }
+
+.forge-admin main {
+  width: min(100%, 100vw - 18rem);
+}
+
+.forge-admin input[type="search"]::placeholder {
+  color: #94a3b8;
+}
