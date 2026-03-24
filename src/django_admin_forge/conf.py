@@ -59,7 +59,7 @@ class ForgeSettings:
 
 
 def get_forge_settings() -> ForgeSettings:
-    user_settings = getattr(settings, "DJANGO_FORGE", {})
+    user_settings = getattr(settings, "DJANGO_ADMIN_FORGE", {})
     valid_keys = {field.name for field in ForgeSettings.__dataclass_fields__.values()}
     filtered = {key: value for key, value in user_settings.items() if key in valid_keys}
     return ForgeSettings(**filtered)

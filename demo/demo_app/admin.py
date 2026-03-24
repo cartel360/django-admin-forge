@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import Group, User
 
-from django_forge.site import forge_admin_site
+from django_admin_forge.site import forge_admin_site
 
 from .models import Customer
 

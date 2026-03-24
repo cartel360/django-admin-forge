@@ -7,7 +7,7 @@ DEBUG = True
 ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
-    "django_forge",
+    "django_admin_forge",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -66,8 +66,8 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-DJANGO_FORGE = {
-    "brand_name": "django-forge",
+DJANGO_ADMIN_FORGE = {
+    "brand_name": "django-admin-forge",
     "brand_logo_text": "FORGE",
     "brand_tagline": "Premium Django control plane",
     "accent_color": "green",

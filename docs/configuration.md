@@ -1,9 +1,9 @@
 # Configuration
 
-Use `DJANGO_FORGE` in Django settings.
+Use `DJANGO_ADMIN_FORGE` in Django settings.
 
 ```python
-DJANGO_FORGE = {
+DJANGO_ADMIN_FORGE = {
     "brand_name": "Forge Admin",
     "brand_logo_text": "FORGE",
     "brand_tagline": "Modern Django operations panel",

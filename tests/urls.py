@@ -3,7 +3,7 @@ from django.contrib.admin.sites import AlreadyRegistered
 from django.contrib.auth import get_user_model
 from django.urls import path
 
-from django_forge.site import forge_admin_site
+from django_admin_forge.site import forge_admin_site
 
 try:
     forge_admin_site.register(get_user_model(), admin.ModelAdmin)

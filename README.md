@@ -1,40 +1,39 @@
-# django-forge
+# django-admin-forge
 
-`django-forge` is a modern, customizable Django admin framework for serious SaaS and enterprise apps.
+Modern, customizable admin UI on top of Django’s admin: same models, permissions, and `ModelAdmin` patterns—upgraded layout, theming, dashboard, and navigation.
 
-It keeps Django admin's reliability and model integration, while upgrading the UI/UX, theming, and developer customization surface.
+**Requirements:** Python 3.11+, Django 4.2–5.x (see `pyproject.toml`).
+
+> **Developing the package or running the demo?** See [DEVELOPMENT.md](DEVELOPMENT.md).  
+> **More detail:** [docs/](docs/) (architecture, configuration snippets, roadmap).
 
 ## Highlights
 
-- Django-first admin replacement (`AdminSite`-based)
-- Branded login and modern dashboard
-- Customizable sidebar menus and app/model navigation
-- Dark, light, and system themes
-- Accent color system
-- Improved changelist, filters, bulk actions, and empty states
-- Improved add/edit form layout
+- Django-first `AdminSite` replacement (`forge_admin_site`)
+- Branded login, dashboard, applications browser
+- Sidebar search, header command/search, collapsible sidebar
+- Light, dark, and system themes; configurable accent colors
+- Improved changelist (filters modal, bulk actions, empty states) and change forms
 
 ## Install
 
-```bash
-pip install django-forge
-```
-
-For local development in this repository:
+From [PyPI](https://pypi.org/project/django-admin-forge/):
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e ".[dev]"
+pip install django-admin-forge
 ```
 
-## Quick Integration
+If you previously used the `django-forge` distribution name: switch `INSTALLED_APPS` and imports to `django_admin_forge`, rename settings to `DJANGO_ADMIN_FORGE`, then `pip uninstall django-forge` if it was installed, and install this package instead.
 
-### 1) Add apps
+## Quick integration
+
+### 1. Add the app
+
+`django_admin_forge` should be listed **before** `django.contrib.admin` so its admin templates take effect.
 
 ```python
 INSTALLED_APPS = [
-    "django_forge",
+    "django_admin_forge",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -45,21 +44,21 @@ INSTALLED_APPS = [
 ]
 ```
 
-### 2) Use Forge admin URLs
+### 2. Mount the Forge admin site
 
 ```python
 from django.urls import path
-from django_forge.site import forge_admin_site
+from django_admin_forge.site import forge_admin_site
 
 urlpatterns = [
     path("admin/", forge_admin_site.urls),
 ]
 ```
 
-### 3) Configure `DJANGO_FORGE` (optional but recommended)
+### 3. Optional: `DJANGO_ADMIN_FORGE`
 
 ```python
-DJANGO_FORGE = {
+DJANGO_ADMIN_FORGE = {
     "brand_name": "Forge Admin",
     "brand_logo_text": "FORGE",
     "brand_tagline": "Modern Django operations panel",
@@ -70,134 +69,101 @@ DJANGO_FORGE = {
 }
 ```
 
-## Configuration Reference
+Run `collectstatic` in production like any Django app with packaged static files.
 
-Use the `DJANGO_FORGE` setting dictionary.
+## Configuration reference
 
-- `brand_name` (`str`): Header brand name.
-- `brand_logo_text` (`str`): Compact sidebar/logo text.
-- `brand_tagline` (`str`): Login/subtitle branding.
-- `accent_color` (`str`): Accent token used in key actions and highlights.
-- `default_theme` (`"light" | "dark" | "system"`): Initial theme mode.
-- `show_sidebar_search` (`bool`): Sidebar search input visibility.
-- `enable_command_bar` (`bool`): Header search/command input visibility.
-- `menu_icons` (`dict[str, str]`): Overrides for app/model icons.
-- `menu_tabs` (`list[dict]`): Sidebar menu tabs (top and bottom areas).
-- `dashboard_analytics_cards` (`list[dict]`): Override dashboard KPI cards for marketing/business snapshots.
+Use the `DJANGO_ADMIN_FORGE` dictionary in Django settings.
 
-## Accent Colors
+| Key | Description |
+|-----|-------------|
+| `brand_name` | Header / site title branding |
+| `brand_logo_text` | Compact sidebar logo text |
+| `brand_tagline` | Login and subtitle text |
+| `accent_color` | Theme accent token (buttons, highlights) |
+| `default_theme` | `"light"`, `"dark"`, or `"system"` |
+| `show_sidebar_search` | Show sidebar search |
+| `enable_command_bar` | Show header search / command input |
+| `menu_icons` | Dict of icon overrides (see below) |
+| `menu_tabs` | Sidebar tab entries (see below) |
+| `dashboard_analytics_cards` | KPI cards backed by your models (see below) |
+
+## Accent colors
 
 Supported `accent_color` values:
 
 `blue`, `green`, `amber`, `violet`, `emerald`, `teal`, `cyan`, `sky`, `indigo`, `purple`, `pink`, `rose`, `red`, `orange`, `yellow`, `lime`, `slate`, `gray`, `zinc`, `neutral`, `stone`
 
-Example:
-
 ```python
-DJANGO_FORGE = {
+DJANGO_ADMIN_FORGE = {
     "accent_color": "rose",
 }
 ```
 
-## Sidebar Menus (`menu_tabs`)
+## Sidebar tabs (`menu_tabs`)
 
-By default, only `Dashboard` is shown.
-
-You can fully configure sidebar tabs:
+Default: Dashboard only. Add entries with `url_name` (Django URL name) or `url` (path).
 
 ```python
-DJANGO_FORGE = {
+DJANGO_ADMIN_FORGE = {
     "menu_tabs": [
         {"label": "Dashboard", "url_name": "admin:index", "icon": "layout-grid"},
         {"label": "Applications", "url_name": "admin:forge-applications", "icon": "layers"},
         {"label": "Users", "url_name": "admin:auth_user_changelist", "icon": "user"},
-        {"label": "Documentation", "url": "/docs/", "icon": "external-link"},
+        {"label": "Docs", "url": "/docs/", "icon": "external-link"},
     ]
 }
 ```
 
-Each tab supports:
-
 - `label` (required)
-- `url_name` (reverse name) or `url` (direct URL)
-- `icon` (optional, defaults to `layout-grid`)
+- `url_name` or `url`
+- `icon` (optional; default `layout-grid`)
 
-## Menu Icon Overrides (`menu_icons`)
+## Menu icon overrides (`menu_icons`)
 
-You can override app/model icons by key:
+Keys: `app_label`, `app_label.model` (lowercase model name), or `model` alone. Later rules in the resolver can override earlier ones; see package `icons.py` for defaults.
 
 ```python
-DJANGO_FORGE = {
+DJANGO_ADMIN_FORGE = {
     "menu_icons": {
-        "auth": "shield",                # app-level
-        "auth.user": "user",             # model-level
+        "auth": "shield",
+        "auth.user": "user",
         "auth.group": "users",
-        "demo_app.customer": "building",
+        "myapp.mymodel": "building",
     }
 }
 ```
 
-Resolution order:
-1. `app_label.model_name`
-2. `model_name`
-3. `app_label`
-4. built-in defaults
+## Dashboard analytics cards
 
-## Dashboard Analytics Cards
-
-You can supply custom KPI cards for the dashboard hero section using real model data:
+Configure KPI tiles with real data from your models (`metric`: `count` today; optional `queryset_filter`).
 
 ```python
-DJANGO_FORGE = {
+DJANGO_ADMIN_FORGE = {
     "dashboard_analytics_cards": [
         {
-            "label": "Customers",
-            "app_label": "demo_app",
-            "model": "Customer",
+            "label": "Orders",
+            "app_label": "orders",
+            "model": "Order",
             "metric": "count",
-            "icon": "users",
-            "hint": "Total customer records",
+            "icon": "inbox",
+            "hint": "All orders",
         },
         {
-            "label": "Active customers",
-            "app_label": "demo_app",
-            "model": "Customer",
+            "label": "Open orders",
+            "app_label": "orders",
+            "model": "Order",
             "metric": "count",
-            "queryset_filter": {"is_active": True},
+            "queryset_filter": {"status": "open"},
             "icon": "activity",
-            "hint": "is_active = true",
+            "hint": "status = open",
         },
     ]
 }
 ```
 
-Each card supports:
-- `label` (required)
-- `app_label` and `model` for dynamic model-based metrics
-- `metric` (currently supports `count`)
-- `queryset_filter` (optional exact Django ORM filters)
-- `value` (optional fallback/manual value)
-- `icon`
-- `hint` (or `trend`)
+Fields: `label`, `app_label`, `model`, `metric`, optional `queryset_filter`, `value`, `icon`, `hint` / `trend`.
 
-## Demo Project (this repo)
+## License
 
-```bash
-python demo/manage.py migrate
-python demo/manage.py createsuperuser
-python demo/manage.py runserver
-```
-
-Open: [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
-
-## Status and Roadmap
-
-Current implementation includes custom site templates, dashboard, apps page, collapsible sidebar, filters modal, improved forms/changelists, search helpers, and theme controls.
-
-Planned next:
-
-- Saved views/filters
-- Dashboard widget API expansion
-- Accessibility and keyboard navigation improvements
-- Packaging/build pipeline polish for production release
-
+MIT. See [LICENSE](LICENSE).

@@ -1,16 +1,17 @@
 [build-system]
-requires = ["setuptools>=69.0", "wheel"]
+requires = ["setuptools>=77.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "django-forge"
+name = "django-admin-forge"
 version = "0.1.0"
 description = "A modern, extensible, premium Django admin framework."
 readme = "README.md"
 requires-python = ">=3.11"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
-  { name = "django-forge contributors" }
+  { name = "django-admin-forge contributors" }
 ]
 keywords = ["django", "admin", "dashboard", "saas", "internal-tools"]
 classifiers = [
@@ -20,11 +21,11 @@ classifiers = [
   "Framework :: Django :: 5.0",
   "Framework :: Django :: 5.1",
   "Intended Audience :: Developers",
-  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Software Development :: Libraries :: Python Modules"
 ]
 dependencies = [
@@ -35,14 +36,19 @@ dependencies = [
 dev = [
   "pytest>=8.0",
   "pytest-django>=4.8",
-  "ruff>=0.6"
+  "ruff>=0.6",
+  "build>=1.2",
+]
+publish = [
+  "build>=1.2",
+  "twine>=6.0",
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-org/django-forge"
-Documentation = "https://github.com/your-org/django-forge/docs"
-Repository = "https://github.com/your-org/django-forge"
-Issues = "https://github.com/your-org/django-forge/issues"
+Homepage = "https://github.com/your-org/django-admin-forge"
+Documentation = "https://github.com/your-org/django-admin-forge/docs"
+Repository = "https://github.com/your-org/django-admin-forge"
+Issues = "https://github.com/your-org/django-admin-forge/issues"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
@@ -52,7 +58,7 @@ include-package-data = true
 where = ["src"]
 
 [tool.setuptools.package-data]
-django_forge = [
+django_admin_forge = [
   "templates/**/*.html",
   "static/**/*",
 ]

@@ -1,7 +1,7 @@
 (function () {
-  var KEY = "django-forge-theme";
+  var KEY = "django-admin-forge-theme";
   var THEME_OPTIONS = ["light", "dark", "system"];
-  var SIDEBAR_KEY = "django-forge-sidebar-collapsed";
+  var SIDEBAR_KEY = "django-admin-forge-sidebar-collapsed";
 
   function getSearchIndex() {
     var node = document.getElementById("forge-search-index");

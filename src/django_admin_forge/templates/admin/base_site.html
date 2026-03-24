@@ -5,7 +5,7 @@
 
 {% block extrastyle %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static 'django_forge/css/forge.css' %}">
+  <link rel="stylesheet" href="{% static 'django_admin_forge/css/forge.css' %}">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -26,7 +26,7 @@
     };
     window.__forgeDefaultTheme = "{{ forge.default_theme|default:'system'|escapejs }}";
   </script>
-  <script defer src="{% static 'django_forge/js/theme.js' %}"></script>
+  <script defer src="{% static 'django_admin_forge/js/theme.js' %}"></script>
 {% endblock %}
 
 {% block bodyclass %}forge-admin {{ block.super }}{% endblock %}

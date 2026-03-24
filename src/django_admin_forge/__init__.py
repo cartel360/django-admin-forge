@@ -1,4 +1,4 @@
-"""django-forge package."""
+"""django-admin-forge package."""
 
 from .conf import ForgeSettings, get_forge_settings
 
