@@ -51,6 +51,8 @@ DJANGO_FORGE = {
 }
 ```
 
+Supported `accent_color` values include: `blue`, `green`, `amber`, `violet`, `emerald`, `teal`, `cyan`, `sky`, `indigo`, `purple`, `pink`, `rose`, `red`, `orange`, `yellow`, `lime`, `slate`, `gray`, `zinc`, `neutral`, `stone`.
+
 ## Roadmap
 
 - Pluggable dashboard cards/widgets

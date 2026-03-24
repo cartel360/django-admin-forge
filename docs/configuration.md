@@ -13,3 +13,6 @@ DJANGO_FORGE = {
     "enable_command_bar": True,
 }
 ```
+
+`accent_color` supports:
+`blue`, `green`, `amber`, `violet`, `emerald`, `teal`, `cyan`, `sky`, `indigo`, `purple`, `pink`, `rose`, `red`, `orange`, `yellow`, `lime`, `slate`, `gray`, `zinc`, `neutral`, `stone`.

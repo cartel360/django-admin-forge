@@ -8,6 +8,22 @@ ACCENT_HEX = {
     "amber": "#d97706",
     "violet": "#7c3aed",
     "emerald": "#059669",
+    "teal": "#0d9488",
+    "cyan": "#0891b2",
+    "sky": "#0284c7",
+    "indigo": "#4f46e5",
+    "purple": "#9333ea",
+    "pink": "#db2777",
+    "rose": "#e11d48",
+    "red": "#dc2626",
+    "orange": "#ea580c",
+    "yellow": "#ca8a04",
+    "lime": "#65a30d",
+    "slate": "#334155",
+    "gray": "#4b5563",
+    "zinc": "#52525b",
+    "neutral": "#525252",
+    "stone": "#57534e",
 }
 
 
@@ -35,7 +51,9 @@ class ForgeSettings:
 
     def as_context(self) -> dict:
         data = asdict(self)
-        data["accent_hex"] = ACCENT_HEX.get(self.accent_color, ACCENT_HEX["blue"])
+        accent_name = (self.accent_color or "blue").lower()
+        data["accent_hex"] = ACCENT_HEX.get(accent_name, ACCENT_HEX["blue"])
+        data["accent_color"] = accent_name
         return data
 
 
