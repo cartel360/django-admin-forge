@@ -1,6 +1,7 @@
 (function () {
   var KEY = "django-forge-theme";
   var THEME_OPTIONS = ["light", "dark", "system"];
+  var SIDEBAR_KEY = "django-forge-sidebar-collapsed";
 
   function getSearchIndex() {
     var node = document.getElementById("forge-search-index");
@@ -246,6 +247,27 @@
     });
   }
 
+  function applySidebarState(collapsed) {
+    document.body.classList.toggle("forge-sidebar-collapsed", collapsed);
+    document.querySelectorAll("[data-sidebar-toggle]").forEach(function (button) {
+      button.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      button.textContent = collapsed ? "»" : "«";
+      button.title = collapsed ? "Expand sidebar" : "Collapse sidebar";
+    });
+  }
+
+  function setupSidebarCollapse() {
+    var collapsed = localStorage.getItem(SIDEBAR_KEY) === "1";
+    applySidebarState(collapsed);
+    document.querySelectorAll("[data-sidebar-toggle]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        collapsed = !document.body.classList.contains("forge-sidebar-collapsed");
+        localStorage.setItem(SIDEBAR_KEY, collapsed ? "1" : "0");
+        applySidebarState(collapsed);
+      });
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     var mode = getStoredThemeMode();
     applyThemeMode(mode);
@@ -254,6 +276,7 @@
     setupSidebarSearch();
     setupGlobalSearch();
     setupFiltersModal();
+    setupSidebarCollapse();
 
     document.querySelectorAll("[data-set-theme]").forEach(function (button) {
       button.addEventListener("click", function () {
