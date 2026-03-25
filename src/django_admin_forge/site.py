@@ -47,6 +47,31 @@ class ForgeAdminSite(AdminSite):
             )
         return tabs
 
+    def _build_quick_links(self, links: list[dict[str, str]]) -> list[dict[str, str]]:
+        resolved = []
+        for link in links:
+            label = link.get("label")
+            if not label:
+                continue
+            url = link.get("url")
+            if not url:
+                url_name = link.get("url_name")
+                if not url_name:
+                    continue
+                try:
+                    url = reverse(url_name)
+                except NoReverseMatch:
+                    continue
+            resolved.append(
+                {
+                    "label": str(label),
+                    "url": url,
+                    "url_name": link.get("url_name", ""),
+                    "icon": link.get("icon", ""),
+                }
+            )
+        return resolved
+
     def each_context(self, request):
         context = super().each_context(request)
         forge_settings = get_forge_settings()
@@ -70,7 +95,10 @@ class ForgeAdminSite(AdminSite):
             app_list.append(app_copy)
         context.update(
             {
-                "forge": forge_settings.as_context(),
+                "forge": {
+                    **forge_settings.as_context(),
+                    "dashboard_quick_links": self._build_quick_links(forge_settings.dashboard_quick_links),
+                },
                 "forge_site_header": forge_settings.brand_name,
                 "available_apps": app_list,
                 "forge_menu_tabs": self._build_menu_tabs(forge_settings.menu_tabs),

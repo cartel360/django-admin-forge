@@ -42,6 +42,31 @@
         {% endfor %}
       </div>
 
+      {% if forge.dashboard_quick_links %}
+        <article class="forge-panel-card rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+          <div class="mb-3 flex items-center justify-between">
+            <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
+              {% forge_icon "zap" "h-4 w-4 text-slate-500" %}
+              <span>{% trans "Quick links" %}</span>
+            </h2>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            {% for link in forge.dashboard_quick_links %}
+              <a
+                href="{{ link.url }}"
+                class="group flex items-center justify-between gap-3 rounded-lg border border-slate-200 dark:border-slate-700 px-3 py-2 hover:bg-slate-50 dark:hover:bg-slate-800"
+              >
+                <span class="flex items-center gap-2 text-sm text-slate-700 dark:text-slate-200 font-medium">
+                  {% if link.icon %}{% forge_icon link.icon "h-4 w-4 text-slate-500" %}{% endif %}
+                  <span>{{ link.label }}</span>
+                </span>
+                {% forge_icon "arrow-right" "h-4 w-4 text-slate-400 group-hover:text-slate-500" %}
+              </a>
+            {% endfor %}
+          </div>
+        </article>
+      {% endif %}
+
       <div class="grid grid-cols-1 xl:grid-cols-12 gap-4">
         <article class="forge-panel-card rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 xl:col-span-7">
           <div class="mb-3 flex items-center justify-between">
