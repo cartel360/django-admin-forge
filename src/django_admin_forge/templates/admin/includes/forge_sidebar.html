@@ -31,12 +31,12 @@
 
     <nav class="space-y-1 overflow-y-auto pr-1 flex-1 min-h-0" data-sidebar-nav>
       {% for tab in forge_menu_tabs_top %}
-        <a href="{{ tab.url }}" data-search-item class="flex items-center gap-2 rounded-md px-3 py-2 text-sm border border-transparent {% if request.path == tab.url %}text-emerald-600 dark:text-emerald-400 bg-slate-100 dark:bg-slate-800{% else %}text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700{% endif %}">
+        <a href="{{ tab.url }}" data-search-item class="flex items-center gap-2 rounded-md px-3 py-2 text-sm border border-transparent {% if request.path|forge_sidebar_tab_active:tab %}text-emerald-600 dark:text-emerald-400 bg-slate-100 dark:bg-slate-800{% else %}text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700{% endif %}">
           {% forge_icon tab.icon "h-4 w-4 text-slate-500" %}
           <span class="forge-sidebar-label">{{ tab.label|forge_labelize }}</span>
         </a>
       {% empty %}
-        <a href="{% url 'admin:index' %}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent hover:border-slate-200 dark:hover:border-slate-700">
+        <a href="{% url 'admin:index' %}" class="flex items-center gap-2 rounded-md px-3 py-2 text-sm border border-transparent {% if request.path|forge_dashboard_path_active %}text-emerald-600 dark:text-emerald-400 bg-slate-100 dark:bg-slate-800{% else %}text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700{% endif %}">
           {% forge_icon "layout-grid" "h-4 w-4 text-slate-500" %}
           <span class="forge-sidebar-label">Dashboard</span>
         </a>
@@ -47,7 +47,7 @@
     <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 shrink-0">
       <nav class="space-y-1 pr-1">
         {% for tab in forge_menu_tabs_bottom %}
-          <a href="{{ tab.url }}" data-search-item class="flex items-center gap-2 rounded-md px-3 py-2 text-sm border border-transparent {% if request.path == tab.url %}text-emerald-600 dark:text-emerald-400 bg-slate-100 dark:bg-slate-800{% else %}text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700{% endif %}">
+          <a href="{{ tab.url }}" data-search-item class="flex items-center gap-2 rounded-md px-3 py-2 text-sm border border-transparent {% if request.path|forge_sidebar_tab_active:tab %}text-emerald-600 dark:text-emerald-400 bg-slate-100 dark:bg-slate-800{% else %}text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 hover:border-slate-200 dark:hover:border-slate-700{% endif %}">
             {% forge_icon tab.icon "h-4 w-4 text-slate-500" %}
             <span class="forge-sidebar-label">{{ tab.label|forge_labelize }}</span>
           </a>

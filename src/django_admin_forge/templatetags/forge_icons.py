@@ -56,3 +56,64 @@ def forge_labelize(value):
     text = text.replace("_", " ")
     text = re.sub(r"\s+", " ", text).strip()
     return text.title()
+
+
+# ---- Sidebar “active” state (same library as icons so one {% load forge_icons %} works everywhere)
+
+_CHANGE_SUB = re.compile(r"^[^/]+/(?:change|delete|history)(?:/|$)")
+
+
+def _is_dashboard_path(path: str) -> bool:
+    norm = path.rstrip("/") or "/"
+    return norm.endswith("/admin") or norm.endswith("/admin/dashboard")
+
+
+@register.filter
+def forge_dashboard_path_active(request_path: str) -> bool:
+    """True on admin index and the Forge ``/admin/dashboard/`` route."""
+    if not request_path:
+        return False
+    path = request_path.split("?", 1)[0]
+    return _is_dashboard_path(path)
+
+
+def _path_segments(path: str) -> list[str]:
+    return [p for p in path.strip().rstrip("/").split("/") if p]
+
+
+def _is_admin_model_changelist_url(path: str) -> bool:
+    """True for /admin/<app_label>/<model>/ but not /admin/ or /admin/<app>/."""
+    parts = _path_segments(path)
+    return len(parts) == 3 and parts[0] == "admin"
+
+
+@register.filter
+def forge_sidebar_tab_active(request_path: str, tab: dict) -> bool:
+    """Whether ``tab`` should show the active (highlighted) sidebar state."""
+    tab = tab or {}
+    url = (tab.get("url") or "").strip()
+    url_name = (tab.get("url_name") or "").strip()
+
+    if not request_path or not url:
+        return False
+
+    path = request_path.split("?", 1)[0]
+    if path == url:
+        return True
+
+    if url_name == "admin:index":
+        return _is_dashboard_path(path)
+
+    if not _is_admin_model_changelist_url(url):
+        return False
+
+    base = url if url.endswith("/") else url + "/"
+    if not path.startswith(base):
+        return False
+
+    rest = path[len(base) :].lstrip("/")
+    if not rest:
+        return True
+    if rest == "add" or rest.startswith("add/"):
+        return True
+    return bool(_CHANGE_SUB.match(rest))
