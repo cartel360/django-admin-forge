@@ -302,6 +302,76 @@
     });
   }
 
+  function setupSearchableSelects() {
+    var MIN_OPTIONS = 10;
+    document.querySelectorAll(".forge-admin select").forEach(function (select) {
+      if (select.hasAttribute("multiple")) return;
+      if (select.hasAttribute("data-no-select-search")) return;
+      if (select.closest(".related-widget-wrapper")) return; // don't interfere with Django related widgets
+      if (select.closest("[data-select-search-wrap]")) return;
+      if (select.options && select.options.length < MIN_OPTIONS) return;
+
+      // Skip if already enhanced by Django autocomplete/select2.
+      if ((select.className || "").indexOf("admin-autocomplete") >= 0) return;
+
+      var wrap = document.createElement("div");
+      wrap.setAttribute("data-select-search-wrap", "1");
+      wrap.className = "forge-select-search-wrap";
+
+      var input = document.createElement("input");
+      input.type = "search";
+      input.autocomplete = "off";
+      input.placeholder = "Search…";
+      input.className = "forge-select-search-input";
+
+      var originalOptions = Array.prototype.slice.call(select.options).map(function (opt) {
+        return {
+          value: opt.value,
+          text: opt.text,
+          disabled: opt.disabled,
+          selected: opt.selected,
+          isPlaceholder: opt.value === "" || opt.getAttribute("value") === "",
+        };
+      });
+
+      function applyFilter(term) {
+        var t = (term || "").trim().toLowerCase();
+        // Rebuild options to avoid weirdness with hidden options across browsers.
+        select.innerHTML = "";
+        originalOptions.forEach(function (o) {
+          var matches = !t || o.isPlaceholder || (o.text || "").toLowerCase().indexOf(t) >= 0;
+          if (!matches) return;
+          var opt = document.createElement("option");
+          opt.value = o.value;
+          opt.text = o.text;
+          opt.disabled = o.disabled;
+          if (o.selected) opt.selected = true;
+          select.appendChild(opt);
+        });
+      }
+
+      input.addEventListener("input", function () {
+        applyFilter(input.value || "");
+      });
+
+      // Keep selection in sync when changing select
+      select.addEventListener("change", function () {
+        var selectedValue = select.value;
+        originalOptions.forEach(function (o) {
+          o.selected = o.value === selectedValue;
+        });
+      });
+
+      // Insert wrapper around select
+      var parent = select.parentNode;
+      parent.insertBefore(wrap, select);
+      wrap.appendChild(input);
+      wrap.appendChild(select);
+
+      applyFilter("");
+    });
+  }
+
   function applySidebarState(collapsed) {
     document.body.classList.toggle("forge-sidebar-collapsed", collapsed);
     document.querySelectorAll("[data-sidebar-toggle]").forEach(function (button) {
@@ -332,6 +402,7 @@
     setupSidebarSearch();
     setupGlobalSearch();
     setupFiltersModal();
+    setupSearchableSelects();
     setupSidebarCollapse();
 
     document.querySelectorAll("[data-set-theme]").forEach(function (button) {

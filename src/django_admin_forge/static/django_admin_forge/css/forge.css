@@ -359,7 +359,51 @@ body.forge-admin {
   border: 1px solid #cbd5e1;
   border-radius: 0.5rem;
   padding: 0.5rem 0.625rem;
+  line-height: 1.25rem;
+  min-height: 2.5rem;
   background: #fff;
+}
+
+/* Keep FK related-object buttons on one row */
+.forge-admin .related-widget-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.forge-admin .related-widget-wrapper > select {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.forge-admin .related-widget-wrapper a,
+.forge-admin .related-widget-wrapper-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.forge-admin .related-widget-wrapper img {
+  display: block;
+}
+
+.forge-select-search-wrap {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.forge-select-search-input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  background: #fff;
+}
+
+.forge-select-search-input::placeholder {
+  color: #94a3b8;
 }
 
 .dark .forge-admin input[type="text"],
@@ -371,6 +415,12 @@ body.forge-admin {
 .dark .forge-admin input[type="datetime-local"],
 .dark .forge-admin textarea,
 .dark .forge-admin select {
+  background: #1e293b;
+  border-color: #475569;
+  color: #f8fafc;
+}
+
+.dark .forge-select-search-input {
   background: #1e293b;
   border-color: #475569;
   color: #f8fafc;
