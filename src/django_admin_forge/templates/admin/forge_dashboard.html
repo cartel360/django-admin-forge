@@ -14,9 +14,25 @@
         </a>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-6 gap-4">
-        {% for card in stats %}
-          <article class="forge-kpi-card rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 md:col-span-1 xl:col-span-2">
+      {% with stats|slice:":6" as kpis %}
+        {% with kpis|length as kpi_count %}
+          <div class="grid grid-cols-1 gap-4
+            {% if kpi_count == 1 %}
+              sm:grid-cols-1
+            {% elif kpi_count == 2 %}
+              sm:grid-cols-2
+            {% elif kpi_count == 3 %}
+              sm:grid-cols-2 lg:grid-cols-3
+            {% elif kpi_count == 4 %}
+              sm:grid-cols-2 lg:grid-cols-4
+            {% elif kpi_count == 5 %}
+              sm:grid-cols-2 lg:grid-cols-5
+            {% else %}
+              sm:grid-cols-2 lg:grid-cols-6
+            {% endif %}
+          ">
+        {% for card in kpis %}
+          <article class="forge-kpi-card rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
             <div class="flex items-start justify-between gap-3">
               <p class="text-xs uppercase tracking-wide text-slate-500 flex items-center gap-2">
                 <span class="forge-kpi-icon-chip">
@@ -41,6 +57,8 @@
           </article>
         {% endfor %}
       </div>
+        {% endwith %}
+      {% endwith %}
 
       {% if forge.dashboard_quick_links %}
         <article class="forge-panel-card rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
