@@ -362,6 +362,14 @@ body.forge-admin {
   line-height: 1.25rem;
   min-height: 2.5rem;
   background: #fff;
+  /* Beat Django admin base.css `color: var(--body-fg)` (OS dark preference + white bg = invisible text). */
+  color: #0f172a;
+}
+
+.forge-admin input::placeholder,
+.forge-admin textarea::placeholder {
+  color: #64748b;
+  opacity: 1;
 }
 
 /* Keep FK related-object buttons on one row */
@@ -418,6 +426,11 @@ body.forge-admin {
   background: #1e293b;
   border-color: #475569;
   color: #f8fafc;
+}
+
+.dark .forge-admin input::placeholder,
+.dark .forge-admin textarea::placeholder {
+  color: #94a3b8;
 }
 
 .dark .forge-select-search-input {
