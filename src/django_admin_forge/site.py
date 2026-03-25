@@ -2,7 +2,6 @@ from django.contrib.admin import AdminSite
 from django.contrib.admin.models import ADDITION, CHANGE, DELETION, LogEntry
 from django.apps import apps
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
 from django.shortcuts import render
 from django.urls import NoReverseMatch, path, reverse
@@ -152,7 +151,6 @@ class ForgeAdminSite(AdminSite):
         staff_count = User.objects.filter(is_staff=True).count()
         active_count = User.objects.filter(is_active=True).count()
         recent_users = User.objects.order_by("-date_joined")[:5]
-        model_counts = ContentType.objects.values("app_label").annotate(total=Count("id")).order_by("-total")[:6]
         recent_actions_qs = LogEntry.objects.select_related("user", "content_type").order_by("-action_time")[:8]
 
         action_labels = {
@@ -208,14 +206,66 @@ class ForgeAdminSite(AdminSite):
             )
         dashboard_stats = custom_stats or default_stats
 
+        # Optional: configurable “Recent records” card
+        recent_records_card = None
+        cfg = forge_settings.dashboard_recent_records or {}
+        model_label = str(cfg.get("model") or "").strip()
+        if model_label and "." in model_label:
+            try:
+                app_label, model_name = model_label.split(".", 1)
+                model_cls = apps.get_model(app_label, model_name)
+            except Exception:
+                model_cls = None
+            if model_cls is not None:
+                try:
+                    limit = int(cfg.get("limit", 5))
+                except Exception:
+                    limit = 5
+                limit = max(1, min(limit, 10))
+
+                title = str(cfg.get("title") or f"Recent {model_cls._meta.verbose_name_plural.title()}")
+                icon = str(cfg.get("icon") or "clock")
+                order_by = str(cfg.get("order_by") or "-pk")
+                primary = str(cfg.get("primary_field") or "")
+                secondary = str(cfg.get("secondary_field") or "")
+                meta = str(cfg.get("meta_field") or "")
+
+                try:
+                    qs = model_cls.objects.all().order_by(order_by)[:limit]
+                    rows = []
+                    for obj in qs:
+                        rows.append(
+                            {
+                                "pk": getattr(obj, "pk", None),
+                                "primary": getattr(obj, primary) if primary else str(obj),
+                                "secondary": getattr(obj, secondary) if secondary else "",
+                                "meta": getattr(obj, meta) if meta else "",
+                            }
+                        )
+                    changelist_url = ""
+                    try:
+                        changelist_url = reverse(
+                            f"admin:{model_cls._meta.app_label}_{model_cls._meta.model_name}_changelist"
+                        )
+                    except NoReverseMatch:
+                        changelist_url = ""
+                    recent_records_card = {
+                        "title": title,
+                        "icon": icon,
+                        "rows": rows,
+                        "changelist_url": changelist_url,
+                    }
+                except Exception:
+                    recent_records_card = None
+
         context = {
             **self.each_context(request),
             "title": "Dashboard",
             "now": now,
             "stats": dashboard_stats,
             "recent_users": recent_users,
-            "model_counts": model_counts,
             "recent_actions": recent_actions,
+            "recent_records_card": recent_records_card,
         }
         recent_users_url = None
         for app in context.get("available_apps", []):

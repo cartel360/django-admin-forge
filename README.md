@@ -88,6 +88,7 @@ Use the `DJANGO_ADMIN_FORGE` dictionary in Django settings.
 | `menu_tabs` | Sidebar tab entries (see below) |
 | `dashboard_analytics_cards` | KPI cards backed by your models (see below) |
 | `dashboard_quick_links` | Quick links shown on the dashboard (see below) |
+| `dashboard_recent_records` | Configurable “Recent records” dashboard card (see below) |
 | `system_health_metrics` | System health metrics shown on the dashboard (see below) |
 | `needs_attention` | Rule-driven “Needs attention” alerts (recommended; see below) |
 
@@ -184,6 +185,38 @@ DJANGO_ADMIN_FORGE = {
         {"label": "Users", "url_name": "admin:auth_user_changelist", "icon": "user"},
         {"label": "Docs", "url": "/docs/", "icon": "external-link"},
     ]
+}
+```
+
+## Dashboard “Recent records” card
+
+Replace the “Model groups” panel on the dashboard with a configurable “Recent records” card sourced from any model.
+
+Config keys:
+
+- `title` (optional)
+- `model` (required): `"app_label.ModelName"`
+- `icon` (optional)
+- `limit` (optional, default 5; max 10)
+- `order_by` (optional, default `-pk`)
+- `primary_field` (optional; falls back to `str(obj)`)
+- `secondary_field` (optional)
+- `meta_field` (optional)
+
+Example:
+
+```python
+DJANGO_ADMIN_FORGE = {
+    "dashboard_recent_records": {
+        "title": "Recent customers",
+        "model": "demo_app.Customer",
+        "icon": "building",
+        "limit": 5,
+        "order_by": "-created_at",
+        "primary_field": "company_name",
+        "secondary_field": "contact_email",
+        "meta_field": "plan",
+    },
 }
 ```
 
