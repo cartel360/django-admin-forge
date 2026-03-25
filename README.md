@@ -15,6 +15,42 @@ Modern, customizable admin UI on top of Django’s admin: same models, permissio
 - Light, dark, and system themes; configurable accent colors
 - Improved changelist (filters modal, bulk actions, empty states) and change forms
 
+## Screenshots
+
+Taken from the bundled **demo** app (accent color, quick links, rule-driven “Needs attention,” and sample models). Light, dark, and system themes use the same layout.
+
+### Light theme
+
+<p align="center">
+  <img src="docs/screenshots/login-light.png" alt="Django Admin Forge — login screen, light theme" width="720">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/dashboard-light.png" alt="Django Admin Forge — dashboard, light theme" width="720">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/logged-out-light.png" alt="Django Admin Forge — signed out screen, light theme" width="720">
+</p>
+
+### Dark theme
+
+<p align="center">
+  <img src="docs/screenshots/login-dark.png" alt="Django Admin Forge — login screen, dark theme" width="720">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/dashboard-dark.png" alt="Django Admin Forge — dashboard, dark theme" width="720">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/dashboard-dark-detail.png" alt="Django Admin Forge — dashboard with alerts and system health, dark theme" width="720">
+</p>
+
+<p align="center">
+  <img src="docs/screenshots/logged-out-dark.png" alt="Django Admin Forge — signed out screen, dark theme" width="720">
+</p>
+
 ## Install
 
 From [PyPI](https://pypi.org/project/django-admin-forge/):
