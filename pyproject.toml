@@ -65,5 +65,5 @@ django_admin_forge = [
 
 [tool.pytest.ini_options]
 DJANGO_SETTINGS_MODULE = "tests.settings"
-pythonpath = ["src"]
+pythonpath = ["src", "."]
 testpaths = ["tests"]

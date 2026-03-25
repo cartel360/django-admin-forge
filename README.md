@@ -89,6 +89,7 @@ Use the `DJANGO_ADMIN_FORGE` dictionary in Django settings.
 | `dashboard_analytics_cards` | KPI cards backed by your models (see below) |
 | `dashboard_quick_links` | Quick links shown on the dashboard (see below) |
 | `system_health_metrics` | System health metrics shown on the dashboard (see below) |
+| `needs_attention` | Rule-driven “Needs attention” alerts (recommended; see below) |
 
 ## Accent colors
 
@@ -212,6 +213,76 @@ DJANGO_ADMIN_FORGE = {
         {"metric": "celery", "timeout": 1.0},
         {"metric": "sentry"},
     ]
+}
+```
+
+## Rule-driven “Needs attention” alerts
+
+For most projects, you don’t want to hand-author every alert. Use `needs_attention` to generate alerts from **model data** (expiring subscriptions, stuck records, low quotas, etc.) with a small, robust config.
+
+Top-level keys:
+
+- `enabled` (default `True`)
+- `rules`: list of rule dicts
+- `display`: `{ "mode": "grouped"|"per_row"|"hybrid", "max_rows": 5 }`
+- `defaults`: `{ "timezone": "current"|"utc", "date_window_days": 14 }`
+
+Supported rule types:
+
+- `date_due` (DateField/DateTimeField): within / overdue / both
+- `numeric_threshold`
+- `bool_flag`
+- `callable` (escape hatch): dotted path returning alert dict(s)
+
+Example:
+
+```python
+DJANGO_ADMIN_FORGE = {
+    "needs_attention": {
+        "display": {"mode": "hybrid", "max_rows": 5},
+        "defaults": {"date_window_days": 14},
+        "rules": [
+            {
+                "id": "customers-inactive",
+                "type": "bool_flag",
+                "title": "Inactive customers",
+                "model": "demo_app.Customer",
+                "field": "is_active",
+                "value": False,
+                "level": "warning",
+                "icon": "building",
+                "cta": "Review",
+            },
+            {
+                "id": "low-seats",
+                "type": "numeric_threshold",
+                "title": "Large customers to review",
+                "model": "demo_app.Customer",
+                "field": "seats",
+                "op": \">=\",
+                "value": 50,
+                "level": "info",
+                "icon": "users",
+            },
+            {
+                "id": "subscription-expiry",
+                "type": "date_due",
+                "title": "Subscriptions expiring soon",
+                "model": "billing.Subscription",
+                "field": "subscription_expiry",
+                "window_days": 14,
+                "direction": "within_or_past",
+                "level": "danger",
+                "icon": "clock",
+            },
+            {
+                "id": "custom-check",
+                "type": "callable",
+                "title": "Custom checks",
+                "callable": "myapp.admin_alerts.custom_alerts",
+            },
+        ],
+    }
 }
 ```
 

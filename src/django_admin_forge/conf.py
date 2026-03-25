@@ -51,6 +51,10 @@ class ForgeSettings:
     dashboard_analytics_cards: list[dict] = field(default_factory=list)
     dashboard_quick_links: list[dict[str, str]] = field(default_factory=list)
     system_health_metrics: list[dict[str, str]] = field(default_factory=list)
+    # New: rule-driven alert generator for the dashboard.
+    # Supported keys are implemented in django_admin_forge/alerts.py
+    needs_attention: dict = field(default_factory=dict)
+    dashboard_alert_rules: dict = field(default_factory=dict)
 
     def as_context(self) -> dict:
         data = asdict(self)

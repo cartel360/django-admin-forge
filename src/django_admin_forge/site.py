@@ -11,6 +11,7 @@ from django.utils import timezone
 from .conf import get_forge_settings
 from .hooks import registry
 from .icons import resolve_menu_icon
+from .alerts import generate_needs_attention_alerts
 
 
 class ForgeAdminSite(AdminSite):
@@ -226,6 +227,13 @@ class ForgeAdminSite(AdminSite):
                 break
         context["recent_users_url"] = recent_users_url
         context["dashboard_cards"] = registry.get_rendered_dashboard_cards(request, context)
+        # Rule-driven dashboard alerts (optional).
+        raw_rules = forge_settings.needs_attention or forge_settings.dashboard_alert_rules
+        generated_alerts = generate_needs_attention_alerts(request, raw_rules) if isinstance(raw_rules, dict) else []
+        context["forge"] = {
+            **(context.get("forge") or {}),
+            "dashboard_alerts": generated_alerts,
+        }
         return render(request, "admin/forge_dashboard.html", context)
 
     def applications_view(self, request):
