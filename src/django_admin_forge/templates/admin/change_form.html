@@ -1,6 +1,19 @@
 {% extends "admin/base_site.html" %}
 {% load i18n admin_urls static admin_modify forge_icons %}
 
+{% block extrahead %}
+{{ block.super }}
+<script src="{% url 'admin:jsi18n' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static "admin/css/forms.css" %}">
+{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form{% endblock %}
+
 {% block content_title %}{% endblock %}
 {% block content_subtitle %}{% endblock %}
 
