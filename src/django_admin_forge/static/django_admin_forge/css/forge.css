@@ -639,6 +639,33 @@ body.forge-admin {
   transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
+/* Needs attention: cap height so many alerts don’t stretch the dashboard */
+.forge-needs-attention-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  max-height: min(28rem, 70vh);
+}
+
+.forge-needs-attention-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.25rem;
+  margin-right: -0.25rem;
+}
+
+.forge-needs-attention-rows {
+  max-height: 11rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 0.25rem;
+  margin-right: -0.25rem;
+}
+
 .forge-panel-card:hover {
   border-color: color-mix(in srgb, var(--forge-accent) 30%, #cbd5e1 70%);
   box-shadow: 0 10px 24px rgba(2, 6, 23, 0.06);

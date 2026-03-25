@@ -98,17 +98,17 @@
       {% endif %}
 
       {% if forge.dashboard_alerts %}
-        <article class="forge-panel-card rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
-          <div class="mb-3 flex items-center justify-between">
-            <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-              {% forge_icon "activity" "h-4 w-4 text-slate-500" %}
+        <article class="forge-panel-card forge-needs-attention-card rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+          <div class="mb-3 flex shrink-0 items-center justify-between gap-3">
+            <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100 flex items-center gap-2 min-w-0">
+              {% forge_icon "activity" "h-4 w-4 text-slate-500 shrink-0" %}
               <span>{% trans "Needs attention" %}</span>
             </h2>
-            <span class="text-xs text-slate-500">{{ forge.dashboard_alerts|length }}{% trans " alert(s)" %}</span>
+            <span class="text-xs text-slate-500 whitespace-nowrap">{{ forge.dashboard_alerts|length }}{% trans " alert(s)" %}</span>
           </div>
-          <div class="space-y-2">
+          <div class="forge-needs-attention-scroll space-y-2">
             {% for alert in forge.dashboard_alerts %}
-              <div class="rounded-xl border px-3 py-3
+              <div class="rounded-xl border px-3 py-2.5
                 {% if alert.level == 'danger' %}
                   border-rose-200 bg-rose-50 dark:border-rose-900/40 dark:bg-rose-950/30
                 {% elif alert.level == 'warning' %}
@@ -144,11 +144,11 @@
                 </div>
 
                 {% if alert.rows %}
-                  <details class="mt-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-950/20 px-3 py-2">
+                  <details class="mt-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-950/20 px-3 py-2">
                     <summary class="cursor-pointer text-sm text-slate-700 dark:text-slate-200 select-none">
-                      {% trans "Show examples" %}
+                      {% trans "Show matching records" %}
                     </summary>
-                    <ul class="mt-2 space-y-1">
+                    <ul class="forge-needs-attention-rows mt-2 space-y-1">
                       {% for row in alert.rows %}
                         <li class="flex items-center justify-between gap-3 text-sm">
                           {% if row.url %}
