@@ -10,7 +10,7 @@ Modern, customizable admin UI on top of Django’s admin: same models, permissio
 ## Highlights
 
 - Django-first `AdminSite` replacement (`forge_admin_site`)
-- Branded login, dashboard, applications browser
+- Branded login, logout confirmation, dashboard, applications browser
 - Sidebar search, header command/search, collapsible sidebar
 - Light, dark, and system themes; configurable accent colors
 - Improved changelist (filters modal, bulk actions, empty states) and change forms
@@ -72,6 +72,8 @@ DJANGO_ADMIN_FORGE = {
 ```
 
 Run `collectstatic` in production like any Django app with packaged static files.
+
+Signing out shows a Forge-styled confirmation page (unless you set Django’s **`LOGOUT_REDIRECT_URL`**, which skips that screen and redirects immediately).
 
 ## Configuration reference
 

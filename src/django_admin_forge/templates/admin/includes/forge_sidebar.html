@@ -108,9 +108,15 @@
         <a href="{% url 'admin:password_change' %}" class="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
           {% forge_icon "key" "h-4 w-4 text-slate-500" %}Change password
         </a>
-        <a href="{% url 'admin:logout' %}" class="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20">
-          {% forge_icon "log-out" "h-4 w-4" %}Sign out
-        </a>
+        <form method="post" action="{% url 'admin:logout' %}" class="m-0">
+          {% csrf_token %}
+          <button
+            type="submit"
+            class="w-full flex items-center gap-2 rounded-md px-2 py-2 text-sm text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-900/20 text-left bg-transparent border-0 cursor-pointer font-inherit"
+          >
+            {% forge_icon "log-out" "h-4 w-4" %}Sign out
+          </button>
+        </form>
       </div>
     </div>
   {% endif %}

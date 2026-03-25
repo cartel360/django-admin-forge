@@ -19,6 +19,7 @@ class ForgeAdminSite(AdminSite):
     site_header = "Forge Admin"
     index_title = "Control Center"
     login_template = "admin/login.html"
+    logout_template = "admin/forge_logged_out.html"
     index_template = "admin/forge_dashboard.html"
     password_change_template = "admin/password_change_form.html"
     password_change_done_template = "admin/password_change_done.html"
