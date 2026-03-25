@@ -61,6 +61,8 @@ urlpatterns = [
 DJANGO_ADMIN_FORGE = {
     "brand_name": "Forge Admin",
     "brand_logo_text": "FORGE",
+    # Optional: "https://…", "/media/logo.png", or STATIC_URL path
+    # "brand_logo": "/static/my-company/logo.svg",
     "brand_tagline": "Modern Django operations panel",
     "accent_color": "green",
     "default_theme": "system",  # "light" | "dark" | "system"
@@ -79,6 +81,7 @@ Use the `DJANGO_ADMIN_FORGE` dictionary in Django settings.
 |-----|-------------|
 | `brand_name` | Header / site title branding |
 | `brand_logo_text` | Compact sidebar logo text |
+| `brand_logo` | Optional image URL or path for the brand mark (sidebar + login). When unset, the bundled Django Admin Forge logo is used |
 | `brand_tagline` | Login and subtitle text |
 | `accent_color` | Theme accent token (buttons, highlights) |
 | `default_theme` | `"light"`, `"dark"`, or `"system"` |

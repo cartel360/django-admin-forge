@@ -36,6 +36,8 @@ def _default_menu_tabs() -> list[dict[str, str]]:
 class ForgeSettings:
     brand_name: str = "Forge Admin"
     brand_logo_text: str = "FORGE"
+    # Override default bundled logo: absolute URL, MEDIA path, or STATIC path (e.g. "/static/my/logo.png").
+    brand_logo: str = ""
     brand_tagline: str = "Modern Django operations panel"
     accent_color: str = "blue"
     default_theme: str = "system"  # light | dark | system

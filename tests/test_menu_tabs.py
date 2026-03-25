@@ -16,6 +16,18 @@ def test_sidebar_injects_dashboard_and_applications_when_menu_tabs_empty(setting
     settings.DJANGO_ADMIN_FORGE = {"menu_tabs": []}
     ctx = forge_admin_site.each_context(_admin_request(rf))
 
+    assert "forge" in ctx and ctx["forge"].get("brand_logo_src")
+    assert "logo.png" in ctx["forge"]["brand_logo_src"]
+
+
+@pytest.mark.django_db
+def test_brand_logo_src_respects_override(settings, rf):
+    settings.DJANGO_ADMIN_FORGE = {
+        "menu_tabs": [],
+        "brand_logo": "https://example.test/logo.svg",
+    }
+    ctx = forge_admin_site.each_context(_admin_request(rf))
+    assert ctx["forge"]["brand_logo_src"] == "https://example.test/logo.svg"
     assert ctx["forge_menu_tabs_top"][0]["url_name"] == "admin:index"
     assert ctx["forge_menu_tabs_top"][0]["label"] == "Dashboard"
     assert len(ctx["forge_menu_tabs_bottom"]) == 1

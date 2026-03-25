@@ -4,6 +4,7 @@ from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.db.models import Count
 from django.shortcuts import render
+from django.templatetags.static import static
 from django.urls import NoReverseMatch, path, reverse
 from django.utils import timezone
 
@@ -125,6 +126,13 @@ class ForgeAdminSite(AdminSite):
             )
         return resolved
 
+    @staticmethod
+    def _brand_logo_src(forge_settings) -> str:
+        raw = (forge_settings.brand_logo or "").strip()
+        if raw:
+            return raw
+        return static("django_admin_forge/img/logo.png")
+
     def each_context(self, request):
         context = super().each_context(request)
         forge_settings = get_forge_settings()
@@ -150,6 +158,7 @@ class ForgeAdminSite(AdminSite):
             {
                 "forge": {
                     **forge_settings.as_context(),
+                    "brand_logo_src": self._brand_logo_src(forge_settings),
                     "dashboard_quick_links": self._build_quick_links(forge_settings.dashboard_quick_links),
                 },
                 "forge_site_header": forge_settings.brand_name,

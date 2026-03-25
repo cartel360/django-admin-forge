@@ -567,6 +567,31 @@ body.forge-admin {
   margin: 0;
 }
 
+.forge-brand-logo {
+  height: 2.25rem;
+  width: auto;
+  max-width: 8.25rem;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.forge-sidebar-collapsed .forge-sidebar .forge-sidebar-brand-row {
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.forge-sidebar-collapsed .forge-sidebar .forge-sidebar-brand-row > a {
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.forge-sidebar-collapsed .forge-sidebar .forge-brand-logo {
+  max-width: 2.5rem;
+  max-height: 2.5rem;
+  object-position: center;
+}
+
 .forge-admin input[type="search"]::placeholder {
   color: #94a3b8;
 }

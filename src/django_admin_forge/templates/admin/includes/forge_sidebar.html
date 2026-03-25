@@ -1,11 +1,22 @@
 {% load forge_icons %}
 <aside class="forge-sidebar w-72 shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 h-[100dvh] p-4 flex flex-col overflow-hidden">
   <div class="flex flex-col h-full min-h-0">
-    <div class="mb-4 flex items-start justify-between gap-2 shrink-0">
-      <div class="min-w-0">
-        <p class="text-xs uppercase tracking-wide text-slate-500 forge-sidebar-label">{{ forge.brand_logo_text }}</p>
-        <p class="font-semibold text-slate-900 dark:text-slate-100 forge-sidebar-label">{{ forge.brand_name }}</p>
-      </div>
+    <div class="mb-4 flex items-center justify-between gap-2 shrink-0 forge-sidebar-brand-row">
+      <a href="{% url 'admin:index' %}" class="flex items-center gap-2.5 min-w-0 flex-1" title="{{ forge.brand_name }}">
+        <img
+          src="{{ forge.brand_logo_src }}"
+          alt="{{ forge.brand_name }}"
+          width="132"
+          height="40"
+          class="forge-brand-logo shrink-0"
+          loading="lazy"
+          decoding="async"
+        >
+        <div class="min-w-0">
+          <p class="text-xs uppercase tracking-wide text-slate-500 forge-sidebar-label">{{ forge.brand_logo_text }}</p>
+          <p class="font-semibold text-slate-900 dark:text-slate-100 forge-sidebar-label">{{ forge.brand_name }}</p>
+        </div>
+      </a>
       <button
         type="button"
         data-sidebar-toggle
