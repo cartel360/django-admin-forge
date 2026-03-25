@@ -85,7 +85,7 @@ Use the `DJANGO_ADMIN_FORGE` dictionary in Django settings.
 | `show_sidebar_search` | Show sidebar search |
 | `enable_command_bar` | Show header search / command input |
 | `menu_icons` | Dict of icon overrides (see below) |
-| `menu_tabs` | Sidebar tab entries (see below) |
+| `menu_tabs` | Optional extra sidebar shortcuts (see below); Dashboard and Applications are always shown |
 | `dashboard_analytics_cards` | KPI cards backed by your models (see below) |
 | `dashboard_quick_links` | Quick links shown on the dashboard (see below) |
 | `dashboard_recent_records` | Configurable “Recent records” dashboard card (see below) |
@@ -106,18 +106,20 @@ DJANGO_ADMIN_FORGE = {
 
 ## Sidebar tabs (`menu_tabs`)
 
-Default: Dashboard only. Add entries with `url_name` (Django URL name) or `url` (path).
+**Dashboard** (`admin:index`) and **Applications** (`admin:forge-applications`) are always added for you: first item in the main nav and last item in the section above the account menu. You do not need to list them in settings.
+
+Use `menu_tabs` only for **additional** shortcuts (with `url_name` as a Django URL name or `url` as a path). They appear after Dashboard in the order you define.
 
 ```python
 DJANGO_ADMIN_FORGE = {
     "menu_tabs": [
-        {"label": "Dashboard", "url_name": "admin:index", "icon": "layout-grid"},
-        {"label": "Applications", "url_name": "admin:forge-applications", "icon": "layers"},
         {"label": "Users", "url_name": "admin:auth_user_changelist", "icon": "user"},
         {"label": "Docs", "url": "/docs/", "icon": "external-link"},
     ]
 }
 ```
+
+If you still include Dashboard or Applications in `menu_tabs`, Forge uses your **label** and **icon** for those entries but keeps Dashboard first and Applications in the bottom group.
 
 - `label` (required)
 - `url_name` or `url`

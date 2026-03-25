@@ -28,13 +28,8 @@ ACCENT_HEX = {
 
 
 def _default_menu_tabs() -> list[dict[str, str]]:
-    return [
-        {
-            "label": "Dashboard",
-            "url_name": "admin:index",
-            "icon": "layout-grid",
-        }
-    ]
+    """Extra sidebar shortcuts only; Dashboard and Applications are injected by ForgeAdminSite."""
+    return []
 
 
 @dataclass(frozen=True)

@@ -47,6 +47,59 @@ class ForgeAdminSite(AdminSite):
             )
         return tabs
 
+    def _normalize_sidebar_menu_tabs(
+        self, menu_tabs: list[dict[str, str]]
+    ) -> tuple[list[dict[str, str]], list[dict[str, str]]]:
+        """Always include Dashboard (admin:index) and Applications (admin:forge-applications).
+
+        User ``menu_tabs`` may add extra shortcuts between them. If the user defines
+        either core entry, their label/icon are preserved.
+        """
+        built = self._build_menu_tabs(menu_tabs)
+        dashboard_tab = None
+        applications_tab = None
+        middle: list[dict[str, str]] = []
+        for tab in built:
+            url_name = (tab.get("url_name") or "").strip()
+            if url_name == "admin:index":
+                if dashboard_tab is None:
+                    dashboard_tab = tab
+                continue
+            if url_name == "admin:forge-applications":
+                if applications_tab is None:
+                    applications_tab = tab
+                continue
+            middle.append(tab)
+
+        if dashboard_tab is None:
+            try:
+                dashboard_tab = {
+                    "label": "Dashboard",
+                    "icon": "layout-grid",
+                    "url": reverse("admin:index"),
+                    "url_name": "admin:index",
+                }
+            except NoReverseMatch:
+                dashboard_tab = None
+
+        if applications_tab is None:
+            try:
+                applications_tab = {
+                    "label": "Applications",
+                    "icon": "layers",
+                    "url": reverse("admin:forge-applications"),
+                    "url_name": "admin:forge-applications",
+                }
+            except NoReverseMatch:
+                applications_tab = None
+
+        top: list[dict[str, str]] = []
+        if dashboard_tab is not None:
+            top.append(dashboard_tab)
+        top.extend(middle)
+        bottom = [applications_tab] if applications_tab is not None else []
+        return top, bottom
+
     def _build_quick_links(self, links: list[dict[str, str]]) -> list[dict[str, str]]:
         resolved = []
         for link in links:
@@ -101,19 +154,12 @@ class ForgeAdminSite(AdminSite):
                 },
                 "forge_site_header": forge_settings.brand_name,
                 "available_apps": app_list,
-                "forge_menu_tabs": self._build_menu_tabs(forge_settings.menu_tabs),
             }
         )
-        context["forge_menu_tabs_top"] = [
-            tab
-            for tab in context["forge_menu_tabs"]
-            if (tab.get("label", "").lower() != "applications" and tab.get("url_name") != "admin:forge-applications")
-        ]
-        context["forge_menu_tabs_bottom"] = [
-            tab
-            for tab in context["forge_menu_tabs"]
-            if (tab.get("label", "").lower() == "applications" or tab.get("url_name") == "admin:forge-applications")
-        ]
+        top_tabs, bottom_tabs = self._normalize_sidebar_menu_tabs(forge_settings.menu_tabs)
+        context["forge_menu_tabs_top"] = top_tabs
+        context["forge_menu_tabs_bottom"] = bottom_tabs
+        context["forge_menu_tabs"] = top_tabs + bottom_tabs
         search_index = []
         for tab in context["forge_menu_tabs"]:
             if tab.get("label") and tab.get("url"):
