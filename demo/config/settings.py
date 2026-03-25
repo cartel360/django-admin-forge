@@ -84,8 +84,10 @@ DJANGO_ADMIN_FORGE = {
         "demo_app.invoice": "credit-card",
     },
     "menu_tabs": [
-        {"label": "Dashboard", "url_name": "admin:index", "icon": "layout-grid"},
-        {"label": "Applications", "url_name": "admin:forge-applications", "icon": "layers"},
+        {"label": "Customers", "url_name": "admin:demo_app_customer_changelist", "icon": "building"},
+        {"label": "Subscriptions", "url_name": "admin:demo_app_subscription_changelist", "icon": "receipt"},
+        {"label": "API Keys", "url_name": "admin:demo_app_apikey_changelist", "icon": "key"},
+        {"label": "Invoices", "url_name": "admin:demo_app_invoice_changelist", "icon": "credit-card"},
     ],
     "dashboard_analytics_cards": [
         {
