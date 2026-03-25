@@ -1,37 +1,162 @@
 {% extends "admin/base_site.html" %}
-{% load i18n static %}
+{% load i18n static forge_icons %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    html,
+    body {
+      height: 100%;
+      overflow: hidden;
+    }
+  </style>
+{% endblock %}
 
 {% block content %}
-<div class="min-h-[80vh] flex items-center justify-center px-4">
-  <div class="w-full max-w-md rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-xl p-8">
-    <div class="mb-6">
-      <p class="text-xs uppercase tracking-wide text-slate-500">{{ forge.brand_logo_text }}</p>
-      <h1 class="text-2xl font-semibold text-slate-900 dark:text-slate-100">{{ forge.brand_name }}</h1>
-      <p class="text-sm text-slate-500 mt-1">{{ forge.brand_tagline }}</p>
+<div class="fixed inset-0 overflow-hidden">
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute inset-0 bg-gradient-to-b from-slate-50 via-white to-slate-50 dark:from-forge-950 dark:via-forge-950 dark:to-forge-900"></div>
+    <div class="absolute -top-24 left-1/2 -translate-x-1/2 h-72 w-[42rem] rounded-full blur-3xl opacity-50 bg-[radial-gradient(circle_at_center,color-mix(in_srgb,var(--forge-accent)_22%,transparent),transparent_60%)]"></div>
+    <div class="absolute bottom-[-10rem] right-[-8rem] h-72 w-72 rounded-full blur-3xl opacity-30 bg-[radial-gradient(circle_at_center,#93c5fd,transparent_60%)] dark:bg-[radial-gradient(circle_at_center,#1d4ed8,transparent_60%)]"></div>
+  </div>
+
+  <div class="absolute inset-x-0 top-0 z-10 px-4 sm:px-6 py-4">
+    <div class="flex items-center justify-between">
+      <a
+        href="{{ site_url|default:'/' }}"
+        class="inline-flex items-center gap-2 rounded-xl px-2.5 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white hover:bg-white/60 dark:hover:bg-slate-900/40"
+      >
+        <span class="text-base leading-none">←</span>
+        <span>{% trans "Back to site" %}</span>
+      </a>
+
+      <div class="relative">
+        <button
+          type="button"
+          class="inline-flex items-center gap-2 rounded-xl border border-slate-200/70 dark:border-slate-700/70 bg-white/70 dark:bg-slate-900/50 px-3 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 shadow-sm hover:shadow-md transition-shadow"
+          data-account-menu-toggle
+          aria-haspopup="menu"
+          aria-expanded="false"
+        >
+          {% forge_icon "sun" "h-4 w-4" %}
+          <span>{% trans "Theme" %}</span>
+          <span class="text-xs opacity-70">▾</span>
+        </button>
+
+        <div
+          class="hidden absolute right-0 mt-2 w-44 rounded-xl border border-slate-200/70 dark:border-slate-700/70 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl shadow-lg p-1"
+          role="menu"
+          data-account-menu
+        >
+          <button type="button" role="menuitem" data-set-theme="light" class="forge-theme-option w-full text-left rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+            {% trans "Light" %}
+          </button>
+          <button type="button" role="menuitem" data-set-theme="dark" class="forge-theme-option w-full text-left rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+            {% trans "Dark" %}
+          </button>
+          <button type="button" role="menuitem" data-set-theme="system" class="forge-theme-option w-full text-left rounded-lg px-3 py-2 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+            {% trans "System" %}
+          </button>
+        </div>
+      </div>
     </div>
-    {% if form.errors and not form.non_field_errors %}
-      <p class="mb-4 text-sm text-red-600">{% trans "Please correct the error below." %}</p>
-    {% endif %}
+  </div>
+
+  <div class="relative min-h-full flex items-center justify-center px-4 py-12 pt-20">
+
+  <div class="relative w-full max-w-md rounded-2xl border border-slate-200/70 dark:border-slate-700/70 bg-white/80 dark:bg-slate-900/70 backdrop-blur-xl shadow-[0_20px_60px_rgba(2,6,23,0.12)] p-8">
+    <div class="flex items-start gap-3 mb-6">
+      <div class="mt-0.5 inline-flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200/70 dark:border-slate-700/70 bg-white/70 dark:bg-slate-900/70">
+        {% forge_icon "shield" "h-5 w-5 forge-accent-text" %}
+      </div>
+      <div class="min-w-0">
+        <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">{{ forge.brand_logo_text }}</p>
+        <h1 class="text-2xl font-semibold text-slate-900 dark:text-slate-100 truncate">{{ forge.brand_name }}</h1>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">{{ forge.brand_tagline }}</p>
+        <p class="text-sm text-slate-600 dark:text-slate-300 mt-3">
+          {% blocktrans with site_name=forge.brand_name|default:site_header %}Welcome back to {{ site_name }}{% endblocktrans %}
+        </p>
+      </div>
+    </div>
+
     {% if form.non_field_errors %}
-      {% for error in form.non_field_errors %}
-        <p class="mb-4 text-sm text-red-600">{{ error }}</p>
-      {% endfor %}
+      <div class="mb-4 rounded-xl border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/40 px-4 py-3 text-sm text-red-700 dark:text-red-200">
+        {% for error in form.non_field_errors %}
+          <div>{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% elif form.errors %}
+      <div class="mb-4 rounded-xl border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/40 px-4 py-3 text-sm text-red-700 dark:text-red-200">
+        {% trans "Please correct the error below." %}
+      </div>
     {% endif %}
+
     <form action="{{ app_path }}" method="post" id="login-form" class="space-y-4">
       {% csrf_token %}
+
       <div>
-        <label class="block text-sm text-slate-600 dark:text-slate-300 mb-1" for="id_username">{% trans "Username" %}</label>
-        <input id="id_username" name="username" type="text" autofocus required class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-slate-900 dark:text-slate-100">
+        <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1" for="id_username">{% trans "Username" %}</label>
+        <div class="relative">
+          <input
+            id="id_username"
+            name="username"
+            type="text"
+            autofocus
+            required
+            autocomplete="username"
+            value="{{ form.username.value|default_if_none:'' }}"
+            aria-invalid="{% if form.username.errors %}true{% else %}false{% endif %}"
+            class="w-full rounded-xl border border-slate-300/80 dark:border-slate-700 bg-white dark:bg-slate-800/70 px-3 py-2.5 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 shadow-sm focus:outline-none focus:ring-4 focus:ring-[color-mix(in_srgb,var(--forge-accent)_22%,transparent)] focus:border-[color-mix(in_srgb,var(--forge-accent)_55%,#cbd5e1)]"
+            placeholder="{% trans 'you@example.com' %}"
+          >
+        </div>
+        {% if form.username.errors %}
+          <div class="mt-1 text-sm text-red-600 dark:text-red-300">
+            {% for error in form.username.errors %}<div>{{ error }}</div>{% endfor %}
+          </div>
+        {% endif %}
       </div>
+
       <div>
-        <label class="block text-sm text-slate-600 dark:text-slate-300 mb-1" for="id_password">{% trans "Password" %}</label>
-        <input id="id_password" name="password" type="password" required class="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3 py-2 text-slate-900 dark:text-slate-100">
+        <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1" for="id_password">{% trans "Password" %}</label>
+        <input
+          id="id_password"
+          name="password"
+          type="password"
+          required
+          autocomplete="current-password"
+          aria-invalid="{% if form.password.errors %}true{% else %}false{% endif %}"
+          class="w-full rounded-xl border border-slate-300/80 dark:border-slate-700 bg-white dark:bg-slate-800/70 px-3 py-2.5 text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 shadow-sm focus:outline-none focus:ring-4 focus:ring-[color-mix(in_srgb,var(--forge-accent)_22%,transparent)] focus:border-[color-mix(in_srgb,var(--forge-accent)_55%,#cbd5e1)]"
+          placeholder="{% trans 'Your password' %}"
+        >
+        {% if form.password.errors %}
+          <div class="mt-1 text-sm text-red-600 dark:text-red-300">
+            {% for error in form.password.errors %}<div>{{ error }}</div>{% endfor %}
+          </div>
+        {% endif %}
       </div>
+
       <input type="hidden" name="next" value="{{ next }}">
-      <button type="submit" class="w-full rounded-lg forge-accent-bg text-white py-2 font-medium">
+
+      <button type="submit" class="w-full rounded-xl forge-accent-bg text-white py-2.5 font-semibold shadow-sm hover:shadow-md transition-shadow">
         {% trans "Sign in" %}
       </button>
+
+      <div class="flex items-center justify-between pt-1">
+        {% url 'admin_password_reset' as password_reset_url %}
+        {% if password_reset_url %}
+          <a href="{{ password_reset_url }}" class="text-sm forge-accent-text hover:underline">
+            {% trans "Forgot your password?" %}
+          </a>
+        {% else %}
+          <span class="text-sm text-slate-500 dark:text-slate-400"></span>
+        {% endif %}
+        <span class="text-xs text-slate-400 dark:text-slate-500">
+          {% trans "Secure access" %}
+        </span>
+      </div>
     </form>
   </div>
+</div>
 </div>
 {% endblock %}
