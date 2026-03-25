@@ -14,11 +14,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="flex bg-slate-50 dark:bg-slate-950">
+<div class="flex h-screen overflow-hidden bg-slate-50 dark:bg-slate-950">
   {% include "admin/includes/forge_sidebar.html" %}
-  <main class="flex-1 min-h-screen">
+  <main class="flex-1 h-screen overflow-hidden flex flex-col">
     {% include "admin/includes/forge_topbar.html" with subtitle="Browse, filter and manage records" %}
-    <section class="p-6">
+    <section class="flex-1 overflow-y-auto p-6">
       <div id="changelist" class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
         <div class="flex items-center justify-between mb-4">
           <h2 class="text-base font-semibold text-slate-900 dark:text-slate-100">{{ cl.opts.verbose_name_plural|capfirst }}</h2>
