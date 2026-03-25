@@ -87,6 +87,7 @@ Use the `DJANGO_ADMIN_FORGE` dictionary in Django settings.
 | `menu_icons` | Dict of icon overrides (see below) |
 | `menu_tabs` | Sidebar tab entries (see below) |
 | `dashboard_analytics_cards` | KPI cards backed by your models (see below) |
+| `dashboard_quick_links` | Quick links shown on the dashboard (see below) |
 
 ## Accent colors
 
@@ -163,6 +164,26 @@ DJANGO_ADMIN_FORGE = {
 ```
 
 Fields: `label`, `app_label`, `model`, `metric`, optional `queryset_filter`, `value`, `icon`, `hint` / `trend`.
+
+## Dashboard quick links
+
+Add a “Quick links” section right after the KPI cards on the dashboard.
+
+Each entry supports:
+
+- `label` (required)
+- `url_name` (Django URL name) **or** `url` (path/URL) (required)
+- `icon` (optional)
+
+```python
+DJANGO_ADMIN_FORGE = {
+    "dashboard_quick_links": [
+        {"label": "Applications", "url_name": "admin:forge-applications", "icon": "layers"},
+        {"label": "Users", "url_name": "admin:auth_user_changelist", "icon": "user"},
+        {"label": "Docs", "url": "/docs/", "icon": "external-link"},
+    ]
+}
+```
 
 ## License
 
