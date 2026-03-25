@@ -5,7 +5,53 @@
       {% forge_icon "activity" "h-4 w-4 text-slate-500" %}
       <span>System health</span>
     </h2>
-    <span class="text-xs rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300 px-2 py-1">Operational</span>
+    <div class="relative" data-system-health-popover>
+      <button
+        type="button"
+        class="text-xs rounded-full px-2 py-1 inline-flex items-center gap-1.5
+        {% if overall_level == 'error' %}
+          bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300
+        {% elif overall_level == 'warn' %}
+          bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-200
+        {% else %}
+          bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300
+        {% endif %}
+        "
+        aria-haspopup="true"
+        aria-expanded="false"
+        data-system-health-toggle
+      >
+        <span>{{ overall_status|default:"Operational" }}</span>
+        <span class="opacity-70">▾</span>
+      </button>
+
+      <div class="hidden absolute right-0 mt-2 w-72 rounded-xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 backdrop-blur shadow-xl p-3 z-30" data-system-health-menu>
+        <p class="text-[11px] uppercase tracking-wide text-slate-500 mb-2">Health summary</p>
+        {% if overall_reasons and overall_level != "ok" %}
+          <ul class="space-y-1.5">
+            {% for r in overall_reasons %}
+              <li class="flex items-center justify-between gap-3 rounded-lg border border-slate-200 dark:border-slate-700 px-2.5 py-2 text-sm">
+                <span class="flex items-center gap-2 min-w-0">
+                  <span class="h-2 w-2 rounded-full
+                    {% if r.status == 'error' %}
+                      bg-rose-500
+                    {% else %}
+                      bg-amber-500
+                    {% endif %}
+                  "></span>
+                  <span class="text-slate-700 dark:text-slate-200 truncate">{{ r.label }}</span>
+                </span>
+                <span class="text-slate-500 text-xs whitespace-nowrap">{{ r.value }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="rounded-lg border border-emerald-200 dark:border-emerald-900/40 bg-emerald-50 dark:bg-emerald-950/30 px-3 py-2 text-sm text-emerald-800 dark:text-emerald-200">
+            All checks passing.
+          </div>
+        {% endif %}
+      </div>
+    </div>
   </div>
   <ul class="space-y-2">
     {% for item in items %}

@@ -67,8 +67,8 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 DJANGO_ADMIN_FORGE = {
-    "brand_name": "django-admin-forge",
-    "brand_logo_text": "FORGE",
+    "brand_name": "Django Admin Forge",
+    "brand_logo_text": "DAF",
     "brand_tagline": "Premium Django control plane",
     "accent_color": "green",
     "default_theme": "system",
@@ -111,5 +111,18 @@ DJANGO_ADMIN_FORGE = {
             "icon": "shield",
             "hint": "System operators",
         },
+    ],
+    "dashboard_quick_links": [
+        {"label": "Applications", "url_name": "admin:forge-applications", "icon": "layers"},
+        {"label": "Users", "url_name": "admin:auth_user_changelist", "icon": "user"},
+        {"label": "Groups", "url_name": "admin:auth_group_changelist", "icon": "users"},
+        {"label": "Customers", "url_name": "admin:demo_app_customer_changelist", "icon": "building"},
+    ],
+    "system_health_metrics": [
+        {"metric": "uptime"},
+        {"metric": "django_version"},
+        {"metric": "database", "alias": "default"},
+        {"metric": "cache", "alias": "default"},
+        {"metric": "debug"},
     ],
 }

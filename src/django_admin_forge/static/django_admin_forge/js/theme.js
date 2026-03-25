@@ -71,6 +71,61 @@
     });
   }
 
+  function setupSystemHealthPopover() {
+    document.querySelectorAll("[data-system-health-popover]").forEach(function (wrap) {
+      var toggle = wrap.querySelector("[data-system-health-toggle]");
+      var menu = wrap.querySelector("[data-system-health-menu]");
+      if (!toggle || !menu) return;
+
+      var closeTimer = null;
+
+      function open() {
+        if (closeTimer) clearTimeout(closeTimer);
+        menu.classList.remove("hidden");
+        toggle.setAttribute("aria-expanded", "true");
+      }
+
+      function closeSoon() {
+        if (closeTimer) clearTimeout(closeTimer);
+        closeTimer = setTimeout(function () {
+          menu.classList.add("hidden");
+          toggle.setAttribute("aria-expanded", "false");
+        }, 120);
+      }
+
+      function toggleMenu() {
+        var isHidden = menu.classList.contains("hidden");
+        if (isHidden) open();
+        else closeSoon();
+      }
+
+      toggle.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleMenu();
+      });
+
+      wrap.addEventListener("mouseenter", open);
+      wrap.addEventListener("mouseleave", closeSoon);
+      toggle.addEventListener("focus", open);
+      toggle.addEventListener("blur", closeSoon);
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          menu.classList.add("hidden");
+          toggle.setAttribute("aria-expanded", "false");
+        }
+      });
+
+      document.addEventListener("click", function (event) {
+        if (!wrap.contains(event.target)) {
+          menu.classList.add("hidden");
+          toggle.setAttribute("aria-expanded", "false");
+        }
+      });
+    });
+  }
+
   function setupToasts() {
     document.querySelectorAll("[data-toast]").forEach(function (toast) {
       var close = toast.querySelector("[data-toast-close]");
@@ -272,6 +327,7 @@
     var mode = getStoredThemeMode();
     applyThemeMode(mode);
     setupAccountMenu();
+    setupSystemHealthPopover();
     setupToasts();
     setupSidebarSearch();
     setupGlobalSearch();

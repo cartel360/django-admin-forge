@@ -88,6 +88,7 @@ Use the `DJANGO_ADMIN_FORGE` dictionary in Django settings.
 | `menu_tabs` | Sidebar tab entries (see below) |
 | `dashboard_analytics_cards` | KPI cards backed by your models (see below) |
 | `dashboard_quick_links` | Quick links shown on the dashboard (see below) |
+| `system_health_metrics` | System health metrics shown on the dashboard (see below) |
 
 ## Accent colors
 
@@ -181,6 +182,35 @@ DJANGO_ADMIN_FORGE = {
         {"label": "Applications", "url_name": "admin:forge-applications", "icon": "layers"},
         {"label": "Users", "url_name": "admin:auth_user_changelist", "icon": "user"},
         {"label": "Docs", "url": "/docs/", "icon": "external-link"},
+    ]
+}
+```
+
+## System health metrics
+
+The “System health” dashboard card supports a configurable list of metrics. If you don’t configure anything, Forge shows a sensible default set based on Django itself (no Celery/Sentry/etc. required).
+
+Supported built-in metrics:
+
+- `uptime`
+- `django_version`
+- `database` (optional `alias`, default `"default"`)
+- `cache` (optional `alias`, default `"default"`)
+- `debug`
+- `celery` (optional; requires Celery; optional `timeout`, default `1.0`)
+- `sentry` (optional; requires `sentry-sdk`)
+
+```python
+DJANGO_ADMIN_FORGE = {
+    "system_health_metrics": [
+        {"metric": "uptime"},
+        {"metric": "django_version"},
+        {"metric": "database", "alias": "default"},
+        {"metric": "cache", "alias": "default"},
+        {"metric": "debug"},
+        # Optional integrations (safe to include; will show "Not installed" if missing)
+        {"metric": "celery", "timeout": 1.0},
+        {"metric": "sentry"},
     ]
 }
 ```

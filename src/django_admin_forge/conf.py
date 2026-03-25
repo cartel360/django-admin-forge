@@ -50,6 +50,7 @@ class ForgeSettings:
     menu_tabs: list[dict[str, str]] = field(default_factory=_default_menu_tabs)
     dashboard_analytics_cards: list[dict] = field(default_factory=list)
     dashboard_quick_links: list[dict[str, str]] = field(default_factory=list)
+    system_health_metrics: list[dict[str, str]] = field(default_factory=list)
 
     def as_context(self) -> dict:
         data = asdict(self)
