@@ -1,0 +1,21 @@
+{% extends "admin/change_form.html" %}
+{% load i18n static %}
+
+{% block form_top %}
+  {% if not is_popup %}
+    <div class="mx-4 mt-4 mb-1 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50/80 dark:bg-slate-900/50 px-4 py-3 text-sm text-slate-600 dark:text-slate-300">
+      {% blocktrans %}Create the account below. You can set password, staff access, groups, and individual permissions before saving—no second step required.{% endblocktrans %}
+    </div>
+  {% endif %}
+{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'admin/css/unusable_password_field.css' %}">
+{% endblock %}
+
+{% block admin_change_form_document_ready %}
+  {{ block.super }}
+  <script src="{% static 'admin/js/unusable_password_field.js' %}" defer></script>
+{% endblock %}
+

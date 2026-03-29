@@ -895,3 +895,208 @@ body.forge-admin {
 .forge-toast-close:hover {
   opacity: 1;
 }
+
+/* -------------------------------------------------------------------------- */
+/* Permissions / groups: filter-horizontal selector (User, Group admin, etc.) */
+/* -------------------------------------------------------------------------- */
+
+.forge-admin .forge-form-row:has(.selector) {
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.forge-admin .forge-form-row:has(.selector) .forge-form-label {
+  padding-top: 0;
+  max-width: 48rem;
+}
+
+.forge-admin .forge-form-row:has(.selector) .forge-form-control {
+  max-width: 100%;
+}
+
+.forge-admin .forge-fieldset-permissions .forge-form-row:not(:has(.selector)) {
+  grid-template-columns: minmax(140px, 220px) 1fr;
+}
+
+.forge-admin .selector {
+  gap: 0.75rem 1.25rem;
+  width: 100%;
+  max-width: min(100%, 56rem);
+}
+
+.forge-admin .selector select {
+  height: auto;
+  min-height: 15rem;
+  max-height: 22rem;
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.625rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0 0 0.5rem 0.5rem;
+  background: #fff;
+  color: #0f172a;
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.forge-admin .selector select option {
+  color: #0f172a;
+  background: #fff;
+}
+
+.forge-admin .selector-available-title,
+.forge-admin .selector-chosen-title {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem 0.5rem 0 0;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.forge-admin .selector-available-title {
+  background: #f1f5f9;
+  color: #475569;
+  border-bottom: none;
+}
+
+.forge-admin .selector-available-title label {
+  color: #475569;
+}
+
+.forge-admin .selector-chosen-title {
+  background: color-mix(in srgb, var(--forge-accent) 14%, #f1f5f9);
+  color: #0f172a;
+  border-bottom: none;
+}
+
+.forge-admin .selector-chosen-title label {
+  color: #0f172a;
+}
+
+.forge-admin .selector .selector-filter {
+  border: 1px solid #cbd5e1;
+  border-top: none;
+  padding: 0.5rem 0.75rem;
+  background: #fafafa;
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.forge-admin .selector-filter input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.5rem;
+  font-size: 0.875rem;
+  background: #fff;
+  color: #0f172a;
+}
+
+.forge-admin .selector ul.selector-chooser {
+  transform: none;
+  align-self: center;
+  margin: 0;
+  padding: 0.25rem 0;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+}
+
+.forge-admin .selector-chosen .list-footer-display {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-top: none;
+  border-radius: 0 0 0.5rem 0.5rem;
+  background: color-mix(in srgb, var(--forge-accent) 10%, #f8fafc);
+  color: #334155;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.forge-admin .selector-chosen .list-footer-display__clear {
+  color: var(--forge-accent);
+}
+
+.forge-admin .selector .selector-chooseall,
+.forge-admin .selector .selector-clearall {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Stacked filter_vertical */
+.forge-admin .stacked {
+  float: none;
+  width: 100%;
+  max-width: min(100%, 32rem);
+}
+
+.forge-admin .stacked select {
+  width: 100%;
+  max-width: 100%;
+  color: #0f172a;
+  background: #fff;
+}
+
+.dark .forge-admin .selector select {
+  border-color: #475569;
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+.dark .forge-admin .selector select option {
+  color: #f8fafc;
+  background: #1e293b;
+}
+
+.dark .forge-admin .selector-available-title {
+  background: #0f172a;
+  color: #94a3b8;
+  border-color: #334155;
+}
+
+.dark .forge-admin .selector-available-title label {
+  color: #94a3b8;
+}
+
+.dark .forge-admin .selector-chosen-title {
+  background: color-mix(in srgb, var(--forge-accent) 22%, #0f172a);
+  color: #f1f5f9;
+  border-color: #334155;
+}
+
+.dark .forge-admin .selector-chosen-title label {
+  color: #f1f5f9;
+}
+
+.dark .forge-admin .selector .selector-filter {
+  background: #0f172a;
+  border-color: #334155;
+  color: #94a3b8;
+}
+
+.dark .forge-admin .selector-filter input {
+  border-color: #475569;
+  background: #1e293b;
+  color: #f8fafc;
+}
+
+.dark .forge-admin .selector ul.selector-chooser {
+  background: #0f172a;
+  border-color: #334155;
+}
+
+.dark .forge-admin .selector-chosen .list-footer-display {
+  background: color-mix(in srgb, var(--forge-accent) 18%, #0f172a);
+  border-color: #334155;
+  color: #cbd5e1;
+}
+
+.dark .forge-admin .stacked select {
+  background: #1e293b;
+  color: #f8fafc;
+}

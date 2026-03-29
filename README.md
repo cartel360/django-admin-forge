@@ -91,6 +91,20 @@ urlpatterns = [
 ]
 ```
 
+Register **auth** models on the same site (Django does not do this automatically for a custom `AdminSite`). Use **`ForgeUserAdmin`** so the *add user* screen includes **staff flags, groups, and permissions** in one step (instead of only after the first save):
+
+```python
+from django.contrib.auth import get_user_model
+from django.contrib.auth.admin import GroupAdmin
+from django.contrib.auth.models import Group
+
+from django_admin_forge.contrib.auth_admin import ForgeUserAdmin
+from django_admin_forge.site import forge_admin_site
+
+forge_admin_site.register(get_user_model(), ForgeUserAdmin)
+forge_admin_site.register(Group, GroupAdmin)
+```
+
 ### 3. Optional: `DJANGO_ADMIN_FORGE`
 
 ```python

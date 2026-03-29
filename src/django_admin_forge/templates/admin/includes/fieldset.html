@@ -1,8 +1,22 @@
 {% load i18n admin_urls %}
-<fieldset id="fieldset-{{ forloop.counter }}" class="scroll-mt-24">
+<fieldset
+  id="fieldset-{{ forloop.counter }}"
+  class="scroll-mt-24{% if 'user_permissions' in fieldset.fields or 'groups' in fieldset.fields or 'permissions' in fieldset.fields %} forge-fieldset-permissions{% endif %}"
+>
   {% if fieldset.name %}
     <div class="px-4 py-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/40">
       <h3 class="text-xs font-semibold uppercase tracking-wide text-slate-500">{{ fieldset.name }}</h3>
+      {% if 'user_permissions' in fieldset.fields or 'groups' in fieldset.fields or 'permissions' in fieldset.fields %}
+        <p class="mt-2 text-sm text-slate-600 dark:text-slate-400 font-normal normal-case tracking-normal">
+          {% blocktrans %}Use the search box to filter long lists, then the arrows to move items. Groups bundle permissions; individual permissions are optional fine-grained control.{% endblocktrans %}
+        </p>
+      {% endif %}
+    </div>
+  {% elif 'user_permissions' in fieldset.fields or 'groups' in fieldset.fields or 'permissions' in fieldset.fields %}
+    <div class="px-4 py-3 border-b border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/40">
+      <p class="text-sm text-slate-600 dark:text-slate-400">
+        {% blocktrans %}Use the search box to filter long lists, then the arrows to move items. Groups bundle permissions; individual permissions are optional fine-grained control.{% endblocktrans %}
+      </p>
     </div>
   {% endif %}
   {% if fieldset.description %}

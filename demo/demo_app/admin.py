@@ -1,6 +1,8 @@
 from django.contrib import admin
+from django.contrib.auth.admin import GroupAdmin
 from django.contrib.auth.models import Group, User
 
+from django_admin_forge.contrib.auth_admin import ForgeUserAdmin
 from django_admin_forge.site import forge_admin_site
 
 from .models import ApiKey, Customer, Invoice, Subscription
@@ -38,5 +40,5 @@ forge_admin_site.register(Customer, CustomerAdmin)
 forge_admin_site.register(Subscription, SubscriptionAdmin)
 forge_admin_site.register(ApiKey, ApiKeyAdmin)
 forge_admin_site.register(Invoice, InvoiceAdmin)
-forge_admin_site.register(User)
-forge_admin_site.register(Group)
+forge_admin_site.register(User, ForgeUserAdmin)
+forge_admin_site.register(Group, GroupAdmin)
